@@ -12,6 +12,9 @@ public class ItemstaffmanageApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(ItemstaffmanageApplication.class);
 	}
+
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(ItemstaffmanageApplication.class, args);
 	}
