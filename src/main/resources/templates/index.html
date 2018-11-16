@@ -31,47 +31,47 @@
 <body data-type="index" class="theme-white">
 <!--<script src="assets/js/theme.js"></script>-->
 <div class="am-g tpl-g">
-    <div th:include="header :: copyright"></div>
-    <!-- &lt;!&ndash; 头部 &ndash;&gt;
-     <header>
-         &lt;!&ndash; logo &ndash;&gt;
-         <div class="am-fl tpl-header-logo">
-             <a href="javascript:;"><img src="assets/img/logo2.png" alt=""></a>
-         </div>
-         &lt;!&ndash; 右侧内容 &ndash;&gt;
-         <div class="tpl-header-fluid">
-             &lt;!&ndash; 侧边切换 &ndash;&gt;
-             <div class="am-fl tpl-header-switch-button am-icon-list">
-                     <span>
+    <!--<div th:include="header :: copyright"></div>-->
+    <header>
+        <!-- logo -->
+        <div class="am-fl tpl-header-logo">
+            <img src="assets/img/wonderslogo.png" alt="">
+            <!--<a href="javascript:;"></a>-->
+        </div>
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
 
-                 </span>
-             </div>
-             &lt;!&ndash; 搜索 &ndash;&gt;
-             <div class="am-fl tpl-header-search">
-                 <form class="tpl-header-search-form" action="javascript:;">
-                     <button class="tpl-header-search-btn am-icon-search"></button>
-                     <input class="tpl-header-search-box" type="text" placeholder="搜索内容...">
-                 </form>
-             </div>
-             &lt;!&ndash; 其它功能&ndash;&gt;
-             <div class="am-fr tpl-header-navbar">
-                 <ul>
-                     &lt;!&ndash; 欢迎语 &ndash;&gt;
-                     <li class="am-text-sm tpl-header-navbar-welcome">
-                         <a href="javascript:;">欢迎你, <span>万达信息</span> </a>
-                     </li>
+                </span>
+            </div>
+            <!-- 搜索 -->
+            <div class="am-fl tpl-header-search" th:if="${user.stRole}==10">
+                <div class="tpl-header-search-form" >
+                    <input class="tpl-header-search-box" id="searchText" type="text" placeholder="请输入项目名或人员名">
+                    <button class="tpl-header-search-btn am-icon-search" id="searchButton"></button>
+                </div>
+            </div>
+            <!-- 其它功能-->
+            <div class="am-fr tpl-header-navbar">
+                <ul>
+                    <!-- 欢迎语 -->
+                    <li class="am-text-sm tpl-header-navbar-welcome">
+                        <a href="javascript:;">欢迎你, <span>[[${user.stName}]]</span> </a>
+                    </li>
 
-                     &lt;!&ndash; 退出 &ndash;&gt;
-                     <li class="am-text-sm">
-                         <a href="javascript:;">
-                             <span class="am-icon-sign-out"></span> 退出
-                         </a>
-                     </li>
-                 </ul>
-             </div>
-         </div>
+                    <!-- 退出 -->
+                    <li class="am-text-sm">
+                        <a class="loginOut">
+                            <span class="am-icon-sign-out"></span> 退出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-     </header>-->
+    </header>
     <!-- 风格切换 -->
     <!--<div class="tpl-skiner">
         <div class="tpl-skiner-toggle am-icon-cog">
@@ -140,7 +140,7 @@
 
         </ul>
 
-        <div style="margin-top: 100px;margin-left: 10px">
+        <div style="margin-top: 100px;margin-left: 10px" data-am-sticky="{top:450}">
             <button
                     th:if="${user.stRole==10}"
                     type="button"
@@ -741,6 +741,23 @@
             error: function (message) {
                 console.log(+message);
                 alert("系统忙！");
+                location.reload();
+            }
+        });
+    });
+    $("#searchButton").click(function () {
+        searchName = $("#searchText").val();
+        $.ajax({
+            type: "POST",
+            url: "task/searchTasks",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            data: {"searchName": searchName},
+            dataType: "html",
+            success: function (message) {
+                $(".tpl-content-wrapper").html(message);
+            },
+            error: function (message) {
                 location.reload();
             }
         });

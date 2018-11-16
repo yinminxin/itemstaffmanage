@@ -1,0 +1,8 @@
+/target/
+/.settings/
+/.classpath
+/.idea/
+/*.log
+/src/main/resources/config/application-pro.yml
+/out/
+/*.pdf

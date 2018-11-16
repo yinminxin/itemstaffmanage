@@ -19,10 +19,10 @@
                 </span>
                 </div>
                 <!-- 搜索 -->
-                <div class="am-fl tpl-header-search">
-                    <form class="tpl-header-search-form" action="javascript:;">
-                        <button class="tpl-header-search-btn am-icon-search"></button>
+                <div class="am-fl tpl-header-search" th:if="${user.stRole}==11">
+                    <form class="tpl-header-search-form" >
                         <input class="tpl-header-search-box" type="text" placeholder="搜索内容...">
+                        <button class="tpl-header-search-btn am-icon-search"></button>
                     </form>
                 </div>
                 <!-- 其它功能-->

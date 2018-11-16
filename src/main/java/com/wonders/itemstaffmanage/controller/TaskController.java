@@ -8,6 +8,7 @@ import com.wonders.itemstaffmanage.service.TBItemService;
 import com.wonders.itemstaffmanage.service.TBStaffService;
 import com.wonders.itemstaffmanage.service.TBTaskService;
 import com.wonders.itemstaffmanage.vo.AddTaskVo;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,6 +97,29 @@ public class TaskController {
         }
         map.put("staff",staff);
         return "tasks/staffTasks";
+    }
+    @RequestMapping("/searchTasks")
+    public String findTasksBySearchName(Map<String,Object> map,@RequestParam("searchName") String searchName){
+        List<TbTask> tasks = new ArrayList<>();
+        TbItem item=tbItemService.findByStNameAndStState(searchName,(byte)0);
+        if (!StringUtils.isEmpty(item)) {
+            if(item.getTbTasks().size()>0){
+                tasks.addAll(item.getTbTasks());
+                map.put("tasks",tasks);
+            }
+            map.put("item",item);
+            return "tasks/itemTasks";
+        }
+        TbStaff staff=tbStaffService.findOneByStNameAndStState(searchName,(byte)0);
+        if(!StringUtils.isEmpty(staff)){
+            if(staff.getTbTasks().size()>0){
+                tasks.addAll(staff.getTbTasks());
+                map.put("tasks",tasks);
+            }
+            map.put("staff",staff);
+            return "tasks/staffTasks";
+        }
+        return "index";
     }
 
     @RequestMapping("/loadTableByStaffOrItem")

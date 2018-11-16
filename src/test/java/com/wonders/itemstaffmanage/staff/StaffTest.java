@@ -7,6 +7,7 @@ import com.wonders.itemstaffmanage.repository.TBItemRepository;
 import com.wonders.itemstaffmanage.repository.TBStaffRepository;
 import com.wonders.itemstaffmanage.repository.TBTaskRepository;
 import com.wonders.itemstaffmanage.utils.ExcelUtil;
+import com.wonders.itemstaffmanage.utils.MD5Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,15 +56,18 @@ public class StaffTest {
      * @throws Exception
      */
     @Test
-//    @Rollback(false)
+    @Rollback(false)
     @Transactional(/*rollbackFor = Exception.class*/)
     public void addStaffs() throws Exception {
+        int i = 0;
         String filePath = "C:/Users/ymx/Desktop/temp/项目人员管理/人员.xlsx";  //excel文件路径
         File excelFile = new File(filePath);
         List<TbStaff> staffs = convertToVo(excelFile);
         for(TbStaff staff :staffs){
             tbStaffRepository.save(staff);
+            i++;
         }
+        System.out.println("添加成功"+i+"人");
     }
 
     /**
@@ -93,7 +97,7 @@ public class StaffTest {
             staff.setStId(list.get(0).trim()); // 人员id
             staff.setStName(list.get(1).trim()); //人员姓名
             staff.setStState((byte) 0); //人员状态
-            staff.setStPassword("123456"); //默认密码
+            staff.setStPassword(MD5Utils.getPassword("123456")); //默认密码
             staff.setStCreatetime(new Date()); // 创建时间
             staff.setStUsername(list.get(0).trim()); // 用户名
             staff.setStRole((short) 11); //人员角色 10-管理 11-人员

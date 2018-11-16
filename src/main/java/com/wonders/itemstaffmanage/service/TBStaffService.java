@@ -38,4 +38,6 @@ public interface TBStaffService {
      * @param vo
      */
     void updatePassword(LoginVo vo);
+
+    TbStaff findOneByStNameAndStState(String searchName, byte b);
 }

@@ -26,4 +26,12 @@ public interface TBItemService {
      * @param itemId
      */
     void deleteItem(String itemId);
+
+    /**
+     * 根据项目名称查找项目
+     * @param searchName
+     * @param b
+     * @return
+     */
+    TbItem findByStNameAndStState(String searchName, byte state);
 }

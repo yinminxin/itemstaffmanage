@@ -69,4 +69,9 @@ public class TBItemServiceImpl implements TBItemService {
         tbItem.setStState((byte) 1);
         tbItemRepository.save(tbItem);
     }
+
+    @Override
+    public TbItem findByStNameAndStState(String searchName, byte state) {
+        return tbItemRepository.findByStNameAndStState(searchName, state);
+    }
 }

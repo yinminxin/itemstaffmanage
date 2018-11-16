@@ -16,4 +16,12 @@ public interface TBStaffRepository extends JpaRepository<TbStaff,String>,JpaSpec
 
     @Query(value = "SELECT * FROM tb_staff WHERE ST_STATE=:state",nativeQuery = true)
     List<TbStaff> findAllByStState(@Param("state") byte state);
+
+    /**
+     * 根据项目名称查找项目
+     * @param searchName 人员名称
+     * @param state  正常状态-0
+     * @return
+     */
+    TbStaff findByStNameAndStState(String searchName, byte state);
 }

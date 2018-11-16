@@ -90,4 +90,9 @@ public class TBStaffServiceImpl implements TBStaffService {
         staff.setStPassword(password);
         tbStaffRepository.save(staff);
     }
+
+    @Override
+    public TbStaff findOneByStNameAndStState(String searchName, byte state) {
+        return tbStaffRepository.findByStNameAndStState(searchName,state);
+    }
 }
