@@ -35,10 +35,8 @@ public class StaffTest {
 
     @Test
     public void addOneStaff(){
-        // 人员姓名的拼音
-        String pinyin="";
-        // 人员姓名
-        String stName="";
+        String pinyin="admin";   // 人员姓名的拼音
+        String stName="管理员";   // 人员姓名
         TbStaff staff = new TbStaff();
         staff.setStId(pinyin);
         staff.setStName(stName);
@@ -50,6 +48,12 @@ public class StaffTest {
         tbStaffRepository.save(staff);
     }
 
+    /**
+     * excle表格批量导入人员 excel文件路径(两列,第一列:人员姓名的拼音(作为用户名);第二列:人员姓名)
+     * 密码默认:123456
+     * 默认角色:11-人员
+     * @throws Exception
+     */
     @Test
 //    @Rollback(false)
     @Transactional(/*rollbackFor = Exception.class*/)
