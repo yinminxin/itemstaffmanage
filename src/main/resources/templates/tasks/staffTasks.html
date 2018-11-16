@@ -1,0 +1,143 @@
+<div class="am-g tpl-g">
+
+
+    <!-- 内容区域 -->
+    <div class="container-fluid am-cf"  style="padding: 25px">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="page-header-heading" style="float: left"><span class="am-icon-home page-header-heading-icon"></span> [[${staff.stName}]]
+                    <small>任务面板</small>
+                </div>
+                <div  style="margin-right: 20px;float: right">
+                    <!--<button type="button" class="page-header-button" id="doc-modal-1"><span class="am-icon-paint-brush"></span> 添加任务
+                    </button>-->
+                    <button
+                            th:value="${staff.stId}"
+                            onclick="deleteStaff(this)"
+                            type="button"
+                            class="am-btn page-header-button">
+                        <span class="am-icon-paint-brush"></span>
+                        删除人员
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-content am-cf" th:if="${not #lists.isEmpty(tasks)}">
+        <div class="row  am-cf">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" >
+                <div class="widget am-cf widget-body-lg">
+                    <div>
+                        <div style="float: left">
+                            <span >进行中任务
+                            </span>
+                        </div>
+                    </div>
+                    <div class="widget-body  am-fr">
+                        <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                            <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r ">
+                                <thead>
+                                <tr>
+                                    <th>任务名称</th>
+                                    <th>所属项目</th>
+                                    <th>时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="gradeX" th:each="task:${tasks}" th:if="${task.stState} == 0">
+                                    <td th:text="${task.stName}"></td>
+                                    <td th:text="${task.item.stName}"></td>
+                                    <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                                    <td >进行中</td>
+                                    <td>
+                                        <div class="tpl-table-black-operation">
+                                            <button class="am-icon-y-combinator-square" th:value="${task.stId}" onclick="finishTask(this)"
+                                                    data-am-popover="{content: '完成', trigger: 'hover focus'}">
+                                            </button>
+                                            <button class="am-icon-trash" th:value="${task.stId}" onclick="deleteTask(this)"
+                                                    data-am-popover="{content: '删除', trigger: 'hover focus'}">
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- more data -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" >
+                <div class="widget am-cf widget-body-lg">
+                    <div>
+                        <div style="float: left">
+                            <span >已完成任务
+                            </span>
+                        </div>
+                    </div>
+                    <div class="widget-body  am-fr">
+                        <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                            <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r"
+                            >
+                                <thead>
+                                <tr>
+                                    <th>任务名称</th>
+                                    <th>所属项目</th>
+                                    <th>时间</th>
+                                    <th>状态</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="gradeX" th:each="task:${tasks}" th:if="${task.stState} == 1">
+                                    <td th:text="${task.stName}"></td>
+                                    <td th:text="${task.item.stName}"></td>
+                                    <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                                    <td >已完成</td>
+                                </tr>
+                                <!-- more data -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.example-r').DataTable({
+
+            bInfo: false, //页脚信息
+            dom: 'ti'
+        });
+    });
+    deleteStaff=function (ele) {
+        staffDelId  = ele.value;
+        $.ajax({
+            type: "POST",
+            url: "staff/deleteStaff",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            data: {"staffId": staffDelId},
+            // dataType: "json",
+            success: function (message) {
+                alert("删除成功！");
+                location.reload();
+            },
+            error: function (message) {
+                console.log(+message);
+                //$("#request-process-patent").html("提交数据失败！");
+                alert("删除失败！");
+                location.reload();
+            }
+        });
+
+    }
+</script>
+</body>
+</html>

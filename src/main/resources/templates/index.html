@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>项目人员管理系统</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/wanda.ico">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="wanda" />
+    <script src="assets/js/echarts.min.js"></script>
+    <link rel="stylesheet" href="assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="assets/css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+
+</head>
+
+<body data-type="index" class="theme-white">
+<!--<script src="assets/js/theme.js"></script>-->
+<div class="am-g tpl-g">
+    <div th:include="header :: copyright"></div>
+    <!-- &lt;!&ndash; 头部 &ndash;&gt;
+     <header>
+         &lt;!&ndash; logo &ndash;&gt;
+         <div class="am-fl tpl-header-logo">
+             <a href="javascript:;"><img src="assets/img/logo2.png" alt=""></a>
+         </div>
+         &lt;!&ndash; 右侧内容 &ndash;&gt;
+         <div class="tpl-header-fluid">
+             &lt;!&ndash; 侧边切换 &ndash;&gt;
+             <div class="am-fl tpl-header-switch-button am-icon-list">
+                     <span>
+
+                 </span>
+             </div>
+             &lt;!&ndash; 搜索 &ndash;&gt;
+             <div class="am-fl tpl-header-search">
+                 <form class="tpl-header-search-form" action="javascript:;">
+                     <button class="tpl-header-search-btn am-icon-search"></button>
+                     <input class="tpl-header-search-box" type="text" placeholder="搜索内容...">
+                 </form>
+             </div>
+             &lt;!&ndash; 其它功能&ndash;&gt;
+             <div class="am-fr tpl-header-navbar">
+                 <ul>
+                     &lt;!&ndash; 欢迎语 &ndash;&gt;
+                     <li class="am-text-sm tpl-header-navbar-welcome">
+                         <a href="javascript:;">欢迎你, <span>万达信息</span> </a>
+                     </li>
+
+                     &lt;!&ndash; 退出 &ndash;&gt;
+                     <li class="am-text-sm">
+                         <a href="javascript:;">
+                             <span class="am-icon-sign-out"></span> 退出
+                         </a>
+                     </li>
+                 </ul>
+             </div>
+         </div>
+
+     </header>-->
+    <!-- 风格切换 -->
+    <!--<div class="tpl-skiner">
+        <div class="tpl-skiner-toggle am-icon-cog">
+        </div>
+        <div class="tpl-skiner-content">
+            <div class="tpl-skiner-content-title">
+                选择主题
+            </div>
+            <div class="tpl-skiner-content-bar">
+                <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                <span class="skiner-color skiner-black" data-color="theme-black"></span>
+            </div>
+        </div>
+    </div>-->
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <!-- 用户信息 -->
+        <div class="tpl-sidebar-user-panel">
+            <div class="tpl-user-panel-slide-toggleable">
+                <div class="tpl-user-panel-profile-picture">
+                    <img src="assets/img/user04.png" alt="">
+                </div>
+                <span class="user-panel-logged-in-text">
+              <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+              [[${user.stName}]]
+          </span>
+                <a id="updatePassword" th:value="${user.stId}" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 更改密码</a>
+            </div>
+        </div>
+
+        <!-- 菜单 -->
+        <ul class="sidebar-nav">
+            <!--<li class="sidebar-nav-heading"> <span class="sidebar-nav-heading-info"> 附加组件</span></li>-->
+            <li class="sidebar-nav-link" id="zonglan">
+                <a href="index" class="active">
+                    <i class="am-icon-home sidebar-nav-link-logo"></i> 总览
+                </a>
+            </li>
+            <li class="sidebar-nav-link " th:if="${user.stRole==10}">
+                <a href="javascript:;" class="sidebar-nav-sub-title list">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 项目列表
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub">
+                    <li class="sidebar-nav-link" th:each="item:${items}"  onclick="itemTasks(this)">
+                        <a href="javascript:" th:value="${item.stId}" >
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span>[[${item.stName}]]
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-link " th:if="${user.stRole==10}">
+                <a href="javascript:;" class="sidebar-nav-sub-title list" >
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 人员列表
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub">
+                    <li class="sidebar-nav-link" th:each="staff:${staffs}" onclick="staffTasks(this)">
+                        <a href="javascript:"  th:value="${staff.stId}">
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span>[[${staff.stName}]]
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+
+        <div style="margin-top: 100px;margin-left: 10px">
+            <button
+                    th:if="${user.stRole==10}"
+                    type="button"
+                    class="am-btn am-btn-primary"
+                    id="doc-prompt-toggle-item">
+                <!--<span class="am-icon-paint-brush"></span>-->
+                添加项目
+            </button>
+            <button
+                    type="button"
+                    class="am-btn am-btn-primary"
+                    id="doc-prompt-toggle-task">
+                <!--<span class="am-icon-paint-brush"></span>-->
+                添加任务
+            </button>
+        </div>
+    </div>
+
+    <!-- 添加项目 -->
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt-item">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">添加项目</div>
+            <div class="am-modal-bd">
+                <input type="text" class="am-modal-prompt-input" placeholder="新建项目名称">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
+    <!-- 添加人员 -->
+    <!--<div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt-staff">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">添加人员</div>
+            <div class="am-modal-bd">
+                <input type="text" class="am-modal-prompt-input" placeholder="新建人员名称">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>-->
+    <!-- 添加任务 -->
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt-task">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">添加任务</div>
+            <div class="am-modal-bd">
+                <select data-am-selected th:if="${user.stRole}==10" id="staffselect" >
+                    <option value="null" selected>人员选择</option>
+                    <option th:each="staff:${staffs}" th:value="${staff.stId}" th:text="${staff.stName}"></option>
+                </select>
+                <select data-am-selected th:if="${user.stRole}==11" id="staffselect" >
+                    <option th:value="${user.stId}" th:text="${user.stName}"></option>
+                </select>
+                <select data-am-selected id="itemselect">
+                    <option value="null" selected>项目选择</option>
+                    <option th:each="item:${items}" th:value="${item.stId}" th:text="${item.stName}"></option>
+                </select>
+                <input type="text" class="am-modal-prompt-input" placeholder="新建任务名称">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
+    <!--修改密码-->
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt-updatePassWord">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">修改密码</div>
+            <div class="am-modal-bd">
+                <input type="text" class="am-modal-prompt-input" placeholder="输入新密码">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+
+        <div class="container-fluid am-cf" style="padding: 15px">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 总览
+                        <small>任务面板</small>
+                    </div>
+                    <p class="page-header-description"></p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row-content am-cf">
+            <div class="row  am-cf">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                    <div class="widget am-cf" style="min-height: 60px">
+                        <div style="float: left;margin-top: 5px;font-size: 19px">当前任务</div>
+                        <div style="float: right;margin-top: 5px;font-size: 19px" th:text="${proceedTaskNum}"></div>
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                    <div class="widget am-cf" style="min-height: 60px">
+                        <div style="float: left;margin-top: 5px;font-size: 19px">今日新增</div>
+                        <div style="float: right;margin-top: 5px;font-size: 19px" th:text="${todayAddTaskNum}"></div>
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                    <div class="widget am-cf" style="min-height: 60px">
+                        <div style="float: left;margin-top: 5px;font-size: 19px">历史完成</div>
+                        <div style="float: right;margin-top: 5px;font-size: 19px" th:text="${finishTaskNum}"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div style="margin-bottom: 10px;margin-left: 10px" th:if="${user.stRole==10}">
+                    <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="showProceedTasks()">进行中任务</button>
+                    <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="showFinishTasks()">已完成任务</button>
+                </div>
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" th:each="staff:${staffs}" th:if="${user.stRole==10 && staff.taskNowNum gt 0}" >
+                    <div class="widget am-cf widget-body-lg">
+                        <div>
+                            <div style="float: left">
+                            <span th:text="${staff.stName}">
+                            </span>
+                            </div>
+                            <!--<div style="float: right">
+                                <button type="button" th:value="${staff.stId}" class="am-btn am-btn-primary js-modal-open" onclick="findFinishTask(this)">已完成任务</button>
+                            </div>-->
+                        </div>
+                        <div>
+                            <div style="float: right">
+                                当前进行中的任务数 : [[${staff.taskNowNum}]]
+                            </div>
+                            <!--<div style="float: right">
+                                <button type="button" th:value="${staff.stId}" class="am-btn am-btn-primary js-modal-open" onclick="findFinishTask(this)">已完成任务</button>
+                            </div>-->
+                        </div>
+                        <div class="widget-body  am-fr">
+                            <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r"
+                                       >
+                                    <thead>
+                                    <tr>
+                                        <th>任务名称</th>
+                                        <th>所属项目</th>
+                                        <th>时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="gradeX" th:each="task:${staff.tbTasks}" th:if="${task.stState} == 0" >
+                                        <td th:text="${task.stName}"></td>
+                                        <td th:text="${task.item.stName}"></td>
+                                        <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                                        <td >进行中</td>
+                                        <td>
+                                            <div class="tpl-table-black-operation">
+                                                <button class="am-icon-y-combinator-square" th:value="${task.stId}" onclick="finishTask(this)"
+                                                        data-am-popover="{content: '完成', trigger: 'hover focus'}">
+                                                </button>
+                                                <button class="am-icon-trash" th:value="${task.stId}" onclick="deleteTask(this)"
+                                                        data-am-popover="{content: '删除', trigger: 'hover focus'}">
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg finish" th:if="${user.stRole==10 && staff.tbTasks.size() gt 0}" th:each="staff:${staffs}" style="display: none;float: left">
+                    <div class="widget am-cf widget-body-lg">
+                        <div>
+                            <div style="float: left">
+                            <span th:text="${staff.stName}">
+                            </span>
+                            </div>
+                        </div>
+                        <div class="widget-body  am-fr">
+                            <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r "
+                                >
+                                    <thead>
+                                    <tr>
+                                        <th>任务名称</th>
+                                        <th>所属项目</th>
+                                        <th>时间</th>
+                                        <th>状态</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="gradeX" th:each="task:${staff.tbTasks}" th:if="${task.stState} == 1">
+                                        <td th:text="${task.stName}"></td>
+                                        <td th:text="${task.item.stName}"></td>
+                                        <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                                        <td >已完成</td>
+                                    </tr>
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" th:if="${user.stRole==11}" >
+                    <div class="widget am-cf widget-body-lg">
+                        <div>
+                            <div style="float: left">
+                            <span th:text="${user.stName}">
+                            </span>
+                            </div>
+                            <!--<div style="float: right">
+                                <button type="button" th:value="${staff.stId}" class="am-btn am-btn-primary js-modal-open" onclick="findFinishTask(this)">已完成任务</button>
+                            </div>-->
+                        </div>
+                        <div class="widget-body  am-fr">
+                            <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r"
+                                >
+                                    <thead>
+                                    <tr>
+                                        <th>任务名称</th>
+                                        <th>所属项目</th>
+                                        <th>时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="gradeX" th:each="task:${user.tbTasks}" th:if="${task.stState} == 0" >
+                                        <td th:text="${task.stName}"></td>
+                                        <td th:text="${task.item.stName}"></td>
+                                        <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                                        <td >进行中</td>
+                                        <td>
+                                            <div class="tpl-table-black-operation">
+                                                <button class="am-icon-y-combinator-square" th:value="${task.stId}" onclick="finishTask(this)"
+                                                        data-am-popover="{content: '完成', trigger: 'hover focus'}">
+                                                </button>
+                                                <button class="am-icon-trash" th:value="${task.stId}" onclick="deleteTask(this)"
+                                                        data-am-popover="{content: '删除', trigger: 'hover focus'}">
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg finish" th:if="${user.stRole==11}" style="float: left">
+                    <div class="widget am-cf widget-body-lg">
+                        <div>
+                            <div style="float: left">
+                            <span th:text="${user.stName}">
+                            </span>
+                            </div>
+                        </div>
+                        <div class="widget-body  am-fr">
+                            <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r "
+                                >
+                                    <thead>
+                                    <tr>
+                                        <th>任务名称</th>
+                                        <th>所属项目</th>
+                                        <th>时间</th>
+                                        <th>状态</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="gradeX" th:each="task:${user.tbTasks}" th:if="${task.stState} == 1">
+                                        <td th:text="${task.stName}"></td>
+                                        <td th:text="${task.item.stName}"></td>
+                                        <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                                        <td >已完成</td>
+                                    </tr>
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/amazeui.datatables.min.js"></script>
+<script src="assets/js/dataTables.responsive.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script type="text/javascript">
+    $(function() {
+        //添加任务
+        $('#doc-prompt-toggle-task').on('click', function() {
+            $('#my-prompt-task').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    itemselect=$("#itemselect").val();
+                    console.log(itemselect);
+                    staffselect=$("#staffselect").val();
+                    console.log(staffselect);
+                    if(staffselect=="null"||staffselect==""||staffselect==null) {
+                        alert("请选择人员!");
+                    }else if(itemselect=="null"||itemselect==""||staffselect==null) {
+                        alert("请选择项目!");
+                    }else if(e.data==null||e.data==""){
+                        alert("任务名称不能为空!");
+                    }else {
+                            $.ajax({
+                            type: "POST",
+                            url: "task/addTask",
+                            // contentType: "application/json; charset=utf-8",
+                            // data: JSON.stringify(GetJsonData()),
+                            data:{
+                                "itemId": itemselect,
+                                "staffId": staffselect,
+                                "taskName": e.data || ""
+                            },
+                            success: function (message) {
+                                // alert("添加成功！");
+                                location.reload();
+                            },
+                            error: function (message) {
+                                console.log(+message);
+                                alert("提交数据失败！");
+                                location.reload();
+                            }
+                        })
+                    }
+                },
+                onCancel: function(e) {
+                    //alert('不想说!');
+                    location.reload();
+                }
+            });
+        });
+
+        //修改密码
+        $('#updatePassword').on('click', function() {
+            $('#my-prompt-updatePassWord').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    if(e.data==null||e.data==""){
+                        alert("密码不能为空!");
+                    }else {
+                        $.ajax({
+                            type: "POST",
+                            url: "staff/updatePassword",
+                            // contentType: "application/json; charset=utf-8",
+                            // data: JSON.stringify(GetJsonData()),
+                            data:{
+                                "stId": $("#updatePassword").attr("value"),
+                                "stPassword": e.data
+                            },
+                            success: function (message) {
+                                alert("更改成功！重新登陆");
+                                window.location.href = "/";
+                            },
+                            error: function (message) {
+                                console.log(+message);
+                                alert("更改失败失败！");
+                                location.reload();
+                            }
+                        });
+                    }
+                },
+                onCancel: function(e) {
+                    //alert('不想说!');
+                    location.reload();
+                }
+            });
+        });
+
+        //添加项目
+        $('#doc-prompt-toggle-item').on('click', function() {
+            $('#my-prompt-item').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    if(e.data==null||e.data==""){
+                        alert("项目名不能为空!");
+                    }else{
+                        $.ajax({
+                            type: "POST",
+                            url: "item/addItem",
+                            // contentType: "application/json; charset=utf-8",
+                            // data: JSON.stringify(GetJsonData()),
+                            data:{
+                                "itemName": e.data || ""
+                            },
+                            success: function (message) {
+                                alert("项目添加成功！");
+                                location.reload();
+                            },
+                            error: function (message) {
+                                console.log(+message);
+                                alert("提交数据失败！");
+                                location.reload();
+                            }
+                        });
+                    }
+                },
+                onCancel: function(e) {
+                    //alert('不想说!');
+                    location.reload();
+                }
+            });
+        });
+
+        //添加人员
+        /*$('#doc-prompt-toggle-staff').on('click', function() {
+            $('#my-prompt-staff').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    $.ajax({
+                        type: "POST",
+                        url: "staff/addStaff",
+                        // contentType: "application/json; charset=utf-8",
+                        // data: JSON.stringify(GetJsonData()),
+                        data:{
+                            "staffName": e.data || ""
+                        },
+                        success: function (message) {
+                            alert("添加成功！");
+                            location.reload();
+                        },
+                        error: function (message) {
+                            console.log(+message);
+                            alert("提交数据失败！");
+                            location.reload();
+                        }
+                    });
+                },
+                onCancel: function(e) {
+                    //alert('不想说!');
+                    location.reload();
+                }
+            });
+        });*/
+    });
+    showProceedTasks=function () {
+        $(".finish").hide();
+        $(".proceed").show();
+    };
+    showFinishTasks=function () {
+        $(".finish").show();
+        $(".proceed").hide();
+    };
+    finishTask=function (ele) {
+        tdeleteid=ele.value;
+        $.ajax({
+            type: "POST",
+            url: "task/finishTask",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            data: {"taskId": tdeleteid},
+            // dataType: "json",
+            success: function (message) {
+                alert("已添加至完成任务！");
+                a_href=$("a[class*=active]").not(".list").attr("href");
+                if(a_href=="index"){
+                    location.reload();
+                }else{
+                    loadTable();
+                }
+            },
+            error: function (message) {
+                //$("#request-process-patent").html("提交数据失败！");
+                console.log(+message);
+                alert("添加至完成任务失败！");
+                location.reload();
+            }
+        });
+    };
+    itemTasks=function (ele) {
+        itemTasksId=$(ele).find("a:eq(0)").attr("value");
+        $.ajax({
+            type: "POST",
+            url: "task/findTasksByItemId",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            data: {"itemId": itemTasksId},
+            dataType: "html",
+            success: function (message) {
+                $("a").removeClass("active");
+                $(ele).find("a:eq(0)").addClass("active");
+                $(ele).parent().parent("li").find("a:eq(0)").addClass("active");
+                $(".tpl-content-wrapper").html(message);
+            },
+            error: function (message) {
+                alert("系统忙！");
+                console.log(+message);
+                location.reload();
+            }
+        });
+    };
+    staffTasks=function (ele) {
+        staffTasksId=$(ele).find("a:eq(0)").attr("value");
+        $.ajax({
+            type: "POST",
+            url: "task/findTasksByStaffId",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            data: {"staffId": staffTasksId},
+            dataType: "html",
+            success: function (message) {
+                $("a").removeClass("active");
+                $(ele).find("a:eq(0)").addClass("active");
+                $(ele).parent().parent("li").find("a:eq(0)").addClass("active");
+                $(".tpl-content-wrapper").html(message);
+            },
+            error: function (message) {
+                console.log(+message);
+                alert("系统忙！");
+                location.reload();
+            }
+        });
+    };
+    deleteTask=function (ele) {
+        tdeleteid=ele.value;
+        $.ajax({
+            type: "POST",
+            url: "task/deleteTask",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            data: {"taskId": tdeleteid},
+            // dataType: "json",
+            success: function (message) {
+                alert("删除成功！");
+                a_href=$("a[class*=active]").not(".list").attr("href");
+                if(a_href=="index"){
+                    location.reload();
+                }else{
+                    loadTable();
+                }
+            },
+            error: function (message) {
+                console.log(+message);
+                alert("删除失败！");
+                location.reload();
+            }
+        });
+    };
+    $(".list").on("click",function () {
+        $("a").removeClass("active");
+        $(".list").removeClass("active");
+        $(this).addClass("active");
+        $(this).find("a:eq(0)").addClass("active");
+    });
+    loadTable=function () {
+        loadId = $("a[class*=active]").not(".list").attr("value");
+        $.ajax({
+            type: "POST",
+            url: "task/loadTableByStaffOrItem",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            data: {"loadId": loadId},
+            dataType: "html",
+            success: function (message) {
+                $(".tpl-content-wrapper").html(message);
+            },
+            error: function (message) {
+                console.log(+message);
+                alert("系统忙！");
+                location.reload();
+            }
+        });
+    };
+    $(".loginOut").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "loginOut",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            // data: {"loadId": loadId},
+            // dataType: "html",
+            success: function (message) {
+                window.location.href = "/";
+            },
+            error: function (message) {
+                console.log(+message);
+                alert("系统忙！");
+                location.reload();
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

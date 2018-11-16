@@ -1,0 +1,16 @@
+server:
+  port: 9001
+spring:
+  datasource:
+#    url: jdbc:mysql://localhost:3306/itemstaffmanage?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2b8
+#    username: root
+#    password: 123
+
+    url: jdbc:mysql://10.1.64.133:3306/itemstaffmanage?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2b8
+    username: root
+    password: root
+  jpa:
+      database: mysql
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL5Dialect
