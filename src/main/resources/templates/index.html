@@ -222,6 +222,26 @@
             </div>
         </div>
     </div>
+    <!--弹窗-->
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="your-modal-html">
+        <div class="am-modal-dialog" >
+            <input id="searchYear" th:value="${weekYear}" hidden />
+            <input id="searchWeek" th:value="${weekOfYear}" hidden />
+            <input id="nowYear" th:value="${weekYear}" hidden />
+            <input id="nowWeek" th:value="${weekOfYear}" hidden />
+            <div class="am-modal-hd">当前周:[[${weekYear}]]年/第[[${weekOfYear}]]周
+                <a href="index" class="am-close am-close-spin">&times;</a>
+            </div>
+            <div>
+                <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="upWeekTasks()">上一周</button>
+                <span id="changeWeek">[[${weekYear}]]年/第[[${weekOfYear}]]周完成任务列表</span>
+                <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="downWeekTasks()">下一周</button>
+            </div>
+            <div id="my-modal-html">
+            </div>
+        </div>
+    </div>
+    <!--弹窗-->
 
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
@@ -265,6 +285,7 @@
                 <div style="margin-bottom: 10px;margin-left: 10px" th:if="${user.stRole==10}">
                     <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="showProceedTasks()">进行中任务</button>
                     <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="showFinishTasks()">已完成任务</button>
+                    <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="showWeekFinishTasks()">周完成任务</button>
                 </div>
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" th:each="staff:${staffs}" th:if="${user.stRole==10 && staff.taskNowNum gt 0}" >
                     <div class="widget am-cf widget-body-lg">
@@ -273,17 +294,11 @@
                             <span th:text="${staff.stName}">
                             </span>
                             </div>
-                            <!--<div style="float: right">
-                                <button type="button" th:value="${staff.stId}" class="am-btn am-btn-primary js-modal-open" onclick="findFinishTask(this)">已完成任务</button>
-                            </div>-->
                         </div>
                         <div>
                             <div style="float: right">
                                 当前进行中的任务数 : [[${staff.taskNowNum}]]
                             </div>
-                            <!--<div style="float: right">
-                                <button type="button" th:value="${staff.stId}" class="am-btn am-btn-primary js-modal-open" onclick="findFinishTask(this)">已完成任务</button>
-                            </div>-->
                         </div>
                         <div class="widget-body  am-fr">
                             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
@@ -293,7 +308,7 @@
                                     <tr>
                                         <th>任务名称</th>
                                         <th>所属项目</th>
-                                        <th>时间</th>
+                                        <th>创建时间</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
@@ -301,6 +316,7 @@
                                     <tbody>
                                     <tr class="gradeX" th:each="task:${staff.tbTasks}" th:if="${task.stState} == 0" >
                                         <td th:text="${task.stName}"></td>
+                                        <!--<td th:text="${task.item.stName}"></td>-->
                                         <td th:text="${task.item.stName}"></td>
                                         <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
                                         <td >进行中</td>
@@ -323,12 +339,17 @@
                     </div>
                 </div>
 
-                <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg finish" th:if="${user.stRole==10 && staff.tbTasks.size() gt 0}" th:each="staff:${staffs}" style="display: none;float: left">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg finish" th:if="${user.stRole==10 && staff.taskFinishNum gt 0}" th:each="staff:${staffs}" style="display: none;float: left">
                     <div class="widget am-cf widget-body-lg">
                         <div>
                             <div style="float: left">
                             <span th:text="${staff.stName}">
                             </span>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="float: right">
+                                已完成的任务数 : [[${staff.taskFinishNum}]]
                             </div>
                         </div>
                         <div class="widget-body  am-fr">
@@ -339,8 +360,8 @@
                                     <tr>
                                         <th>任务名称</th>
                                         <th>所属项目</th>
-                                        <th>时间</th>
-                                        <th>状态</th>
+                                        <th>创建时间</th>
+                                        <th>完成时间</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -348,7 +369,7 @@
                                         <td th:text="${task.stName}"></td>
                                         <td th:text="${task.item.stName}"></td>
                                         <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
-                                        <td >已完成</td>
+                                        <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>
                                     </tr>
                                     <!-- more data -->
                                     </tbody>
@@ -377,7 +398,7 @@
                                     <tr>
                                         <th>任务名称</th>
                                         <th>所属项目</th>
-                                        <th>时间</th>
+                                        <th>创建时间</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
@@ -423,8 +444,8 @@
                                     <tr>
                                         <th>任务名称</th>
                                         <th>所属项目</th>
-                                        <th>时间</th>
-                                        <th>状态</th>
+                                        <th>创建时间</th>
+                                        <th>完成时间</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -432,7 +453,7 @@
                                         <td th:text="${task.stName}"></td>
                                         <td th:text="${task.item.stName}"></td>
                                         <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
-                                        <td >已完成</td>
+                                        <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>
                                     </tr>
                                     <!-- more data -->
                                     </tbody>
@@ -451,138 +472,105 @@
 <script src="assets/js/dataTables.responsive.min.js"></script>
 <script src="assets/js/app.js"></script>
 <script type="text/javascript">
-    $(function() {
-        //添加任务
-        $('#doc-prompt-toggle-task').on('click', function() {
-            $('#my-prompt-task').modal({
-                relatedTarget: this,
-                onConfirm: function(e) {
-                    itemselect=$("#itemselect").val();
-                    console.log(itemselect);
-                    staffselect=$("#staffselect").val();
-                    console.log(staffselect);
-                    if(staffselect=="null"||staffselect==""||staffselect==null) {
-                        alert("请选择人员!");
-                    }else if(itemselect=="null"||itemselect==""||staffselect==null) {
-                        alert("请选择项目!");
-                    }else if(e.data==null||e.data==""){
-                        alert("任务名称不能为空!");
-                    }else {
-                            $.ajax({
-                            type: "POST",
-                            url: "task/addTask",
-                            // contentType: "application/json; charset=utf-8",
-                            // data: JSON.stringify(GetJsonData()),
-                            data:{
-                                "itemId": itemselect,
-                                "staffId": staffselect,
-                                "taskName": e.data || ""
-                            },
-                            success: function (message) {
-                                // alert("添加成功！");
-                                location.reload();
-                            },
-                            error: function (message) {
-                                console.log(+message);
-                                alert("提交数据失败！");
-                                location.reload();
-                            }
-                        })
-                    }
-                },
-                onCancel: function(e) {
-                    //alert('不想说!');
-                    location.reload();
-                }
-            });
-        });
-
-        //修改密码
-        $('#updatePassword').on('click', function() {
-            $('#my-prompt-updatePassWord').modal({
-                relatedTarget: this,
-                onConfirm: function(e) {
-                    if(e.data==null||e.data==""){
-                        alert("密码不能为空!");
-                    }else {
-                        $.ajax({
-                            type: "POST",
-                            url: "staff/updatePassword",
-                            // contentType: "application/json; charset=utf-8",
-                            // data: JSON.stringify(GetJsonData()),
-                            data:{
-                                "stId": $("#updatePassword").attr("value"),
-                                "stPassword": e.data
-                            },
-                            success: function (message) {
-                                alert("更改成功！重新登陆");
-                                window.location.href = "/";
-                            },
-                            error: function (message) {
-                                console.log(+message);
-                                alert("更改失败失败！");
-                                location.reload();
-                            }
-                        });
-                    }
-                },
-                onCancel: function(e) {
-                    //alert('不想说!');
-                    location.reload();
-                }
-            });
-        });
-
-        //添加项目
-        $('#doc-prompt-toggle-item').on('click', function() {
-            $('#my-prompt-item').modal({
-                relatedTarget: this,
-                onConfirm: function(e) {
-                    if(e.data==null||e.data==""){
-                        alert("项目名不能为空!");
-                    }else{
-                        $.ajax({
-                            type: "POST",
-                            url: "item/addItem",
-                            // contentType: "application/json; charset=utf-8",
-                            // data: JSON.stringify(GetJsonData()),
-                            data:{
-                                "itemName": e.data || ""
-                            },
-                            success: function (message) {
-                                alert("项目添加成功！");
-                                location.reload();
-                            },
-                            error: function (message) {
-                                console.log(+message);
-                                alert("提交数据失败！");
-                                location.reload();
-                            }
-                        });
-                    }
-                },
-                onCancel: function(e) {
-                    //alert('不想说!');
-                    location.reload();
-                }
-            });
-        });
-
-        //添加人员
-        /*$('#doc-prompt-toggle-staff').on('click', function() {
-            $('#my-prompt-staff').modal({
-                relatedTarget: this,
-                onConfirm: function(e) {
+    //添加任务
+    $('#doc-prompt-toggle-task').on('click', function() {
+        $('#my-prompt-task').modal({
+            relatedTarget: this,
+            onConfirm: function(e) {
+                itemselect=$("#itemselect").val();
+                console.log(itemselect);
+                staffselect=$("#staffselect").val();
+                console.log(staffselect);
+                if(staffselect=="null"||staffselect==""||staffselect==null) {
+                    alert("请选择人员!");
+                }else if(itemselect=="null"||itemselect==""||staffselect==null) {
+                    alert("请选择项目!");
+                }else if(e.data==null||e.data==""){
+                    alert("任务名称不能为空!");
+                }else {
                     $.ajax({
                         type: "POST",
-                        url: "staff/addStaff",
+                        url: "task/addTask",
                         // contentType: "application/json; charset=utf-8",
                         // data: JSON.stringify(GetJsonData()),
                         data:{
-                            "staffName": e.data || ""
+                            "itemId": itemselect,
+                            "staffId": staffselect,
+                            "taskName": e.data || ""
                         },
                         success: function (message) {
-                            alert("添加成功！");
+                            // alert("添加成功！");
+                            location.reload();
+                        },
+                        error: function (message) {
+                            console.log(+message);
+                            alert("提交数据失败！");
+                            location.reload();
+                        }
+                    })
+                }
+            },
+            onCancel: function(e) {
+                //alert('不想说!');
+                location.reload();
+            }
+        });
+    });
+
+    //修改密码
+    $('#updatePassword').on('click', function() {
+        $('#my-prompt-updatePassWord').modal({
+            relatedTarget: this,
+            onConfirm: function(e) {
+                if(e.data==null||e.data==""){
+                    alert("密码不能为空!");
+                }else {
+                    $.ajax({
+                        type: "POST",
+                        url: "staff/updatePassword",
+                        // contentType: "application/json; charset=utf-8",
+                        // data: JSON.stringify(GetJsonData()),
+                        data:{
+                            "stId": $("#updatePassword").attr("value"),
+                            "stPassword": e.data
+                        },
+                        success: function (message) {
+                            alert("更改成功！重新登陆");
+                            window.location.href = "/";
+                        },
+                        error: function (message) {
+                            console.log(+message);
+                            alert("更改失败失败！");
+                            location.reload();
+                        }
+                    });
+                }
+            },
+            onCancel: function(e) {
+                //alert('不想说!');
+                location.reload();
+            }
+        });
+    });
+
+    //添加项目
+    $('#doc-prompt-toggle-item').on('click', function() {
+        $('#my-prompt-item').modal({
+            relatedTarget: this,
+            onConfirm: function(e) {
+                if(e.data==null||e.data==""){
+                    alert("项目名不能为空!");
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: "item/addItem",
+                        // contentType: "application/json; charset=utf-8",
+                        // data: JSON.stringify(GetJsonData()),
+                        data:{
+                            "itemName": e.data || ""
+                        },
+                        success: function (message) {
+                            alert("项目添加成功！");
                             location.reload();
                         },
                         error: function (message) {
@@ -591,22 +579,122 @@
                             location.reload();
                         }
                     });
-                },
-                onCancel: function(e) {
-                    //alert('不想说!');
-                    location.reload();
                 }
-            });
-        });*/
+            },
+            onCancel: function(e) {
+                //alert('不想说!');
+                location.reload();
+            }
+        });
     });
+
+    //添加人员
+    /*$('#doc-prompt-toggle-staff').on('click', function() {
+        $('#my-prompt-staff').modal({
+            relatedTarget: this,
+            onConfirm: function(e) {
+                $.ajax({
+                    type: "POST",
+                    url: "staff/addStaff",
+                    // contentType: "application/json; charset=utf-8",
+                    // data: JSON.stringify(GetJsonData()),
+                    data:{
+                        "staffName": e.data || ""
+                    },
+                    success: function (message) {
+                        alert("添加成功！");
+                        location.reload();
+                    },
+                    error: function (message) {
+                        console.log(+message);
+                        alert("提交数据失败！");
+                        location.reload();
+                    }
+                });
+            },
+            onCancel: function(e) {
+                //alert('不想说!');
+                location.reload();
+            }
+        });
+    });*/
+    //显示进行中任务
     showProceedTasks=function () {
         $(".finish").hide();
         $(".proceed").show();
     };
+    //显示已完成任务
     showFinishTasks=function () {
         $(".finish").show();
         $(".proceed").hide();
     };
+    //弹窗显示周完成任务
+    showWeekFinishTasks=function () {
+        nowYear = $("#nowYear").val();
+        nowWeek = $("#nowWeek").val();
+        $("#your-modal-html").modal();
+        getTaskOfWeek(nowYear,nowWeek);
+    };
+    //根据年和周获取周完成列表页面
+    function getTaskOfWeek(year,week){
+        $.ajax({
+            type: "POST",
+            url: "task/getTasksOfWeek",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            dataType: "html",
+            data:{
+                "finishYear": year,
+                "finishWeek": week
+            },
+            success: function (message) {
+                $("#my-modal-html").html(message);
+            },
+            error: function (message) {
+                alert("失败了");
+                // location.reload();
+            }
+        });
+    }
+    //周完成列表页面==>上一周
+    upWeekTasks=function () {
+        if($("#searchWeek").val()==1){
+            searchYear=$("#searchYear").val()-1;
+            $("#searchYear").prop("value",searchYear);
+            searchWeek = getNumOfWeeks(searchYear);
+            $("#searchWeek").prop("value",searchWeek);
+        }else{
+            searchYear=$("#searchYear").val();
+            searchWeek=$("#searchWeek").val()-1;
+            $("#searchWeek").prop("value",searchWeek);
+        }
+        $("#changeWeek").html(searchYear+"年/第"+searchWeek+"周完成任务列表");
+        getTaskOfWeek(searchYear,searchWeek);
+    };
+    //周完成列表页面==>下一周
+    downWeekTasks=function () {
+        searchYear=$("#searchYear").val();
+        searchWeek = $("#searchWeek").val();
+        nowYear = $("#nowYear").val()
+        nowWeek = $("#nowWeek").val()
+        allWeek = getNumOfWeeks(searchYear);
+        if(searchYear==nowYear&&searchWeek==nowWeek){
+            $("#changeWeek").attr("disabled",true);
+        }else{
+            if(searchWeek==allWeek){
+                searchYear++;
+                $("#searchYear").prop("value",searchYear);
+                searchWeek=1;
+                $("#searchWeek").prop("value",1);
+            }else {
+                searchWeek++;
+                $("#searchWeek").prop("value",searchWeek);
+            }
+        }
+        $("#changeWeek").html(searchYear+"年/第"+searchWeek+"周完成任务列表");
+        getTaskOfWeek(searchYear,searchWeek);
+    }
+    //完成任务
     finishTask=function (ele) {
         tdeleteid=ele.value;
         $.ajax({
@@ -633,6 +721,7 @@
             }
         });
     };
+    //项目任务页面
     itemTasks=function (ele) {
         itemTasksId=$(ele).find("a:eq(0)").attr("value");
         $.ajax({
@@ -655,6 +744,7 @@
             }
         });
     };
+    // 人员任务页面
     staffTasks=function (ele) {
         staffTasksId=$(ele).find("a:eq(0)").attr("value");
         $.ajax({
@@ -677,6 +767,7 @@
             }
         });
     };
+    // 删除任务
     deleteTask=function (ele) {
         tdeleteid=ele.value;
         $.ajax({
@@ -708,6 +799,7 @@
         $(this).addClass("active");
         $(this).find("a:eq(0)").addClass("active");
     });
+    //刷新table
     loadTable=function () {
         loadId = $("a[class*=active]").not(".list").attr("value");
         $.ajax({
@@ -727,6 +819,7 @@
             }
         });
     };
+    //退出登陆
     $(".loginOut").click(function () {
         $.ajax({
             type: "POST",
@@ -745,6 +838,7 @@
             }
         });
     });
+    //搜索
     $("#searchButton").click(function () {
         searchName = $("#searchText").val();
         $.ajax({
@@ -762,6 +856,15 @@
             }
         });
     });
+    //根据年份获取这年一共有多少周
+    function getNumOfWeeks(year){
+        // var myDate = new Date();
+        // var year = myDate.getFullYear();  //获取当前年
+        var d=new Date(year,0,1);
+        var yt=(( year%4==0 && year%100!=0) || year%400==0)? 366:365;
+        var allwk = Math.ceil((yt-d.getDay())/7.0);
+        return allwk;
+    }
 </script>
 </body>
 

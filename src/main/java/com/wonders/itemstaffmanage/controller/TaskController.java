@@ -144,4 +144,14 @@ public class TaskController {
         map.put("item",item);
         return "tasks/itemTasks";
     }
+
+
+    @RequestMapping("/getTasksOfWeek")
+    public String getTasksOfWeek(Map<String,Object> map,@RequestParam("finishYear") String finishYear,
+                                 @RequestParam("finishWeek") String finishWeek){
+
+        List<TbTask> finishTasks=tbTaskService.findAllByStStateAndNumFinishYearAndNumFinishWeek((byte)1,finishYear,finishWeek);
+        map.put("finishTasks",finishTasks);
+        return "tasks/finishTasksOfWeek";
+    }
 }

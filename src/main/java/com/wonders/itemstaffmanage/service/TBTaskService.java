@@ -43,4 +43,13 @@ public interface TBTaskService {
      * @return
      */
     List<TbTask> findAllByItemId(String itemId);
+
+    /**
+     * 根据年和周查询已完成任务
+     * @param b
+     * @param finishYear
+     * @param finishWeek
+     * @return
+     */
+    List<TbTask> findAllByStStateAndNumFinishYearAndNumFinishWeek(byte b, String finishYear, String finishWeek);
 }

@@ -15,4 +15,13 @@ public interface TBTaskRepository extends JpaRepository<TbTask,String>,JpaSpecif
 
     @Query(value = "SELECT * FROM tb_task WHERE ST_ITEM_ID=:itemId",nativeQuery = true)
     List<TbTask> findByItemId(@Param("itemId") String itemId);
+
+    /**
+     * 根据年和周查询已完成任务
+     * @param state
+     * @param year
+     * @param week
+     * @return
+     */
+    List<TbTask> findAllByStStateAndNumFinishYearAndNumFinishWeek(byte state, Integer year, Integer week);
 }

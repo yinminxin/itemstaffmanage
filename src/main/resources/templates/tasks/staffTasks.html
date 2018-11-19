@@ -40,7 +40,7 @@
                                 <tr>
                                     <th>任务名称</th>
                                     <th>所属项目</th>
-                                    <th>时间</th>
+                                    <th>创建时间</th>
                                     <th>状态</th>
                                     <th>操作</th>
                                 </tr>
@@ -86,8 +86,8 @@
                                 <tr>
                                     <th>任务名称</th>
                                     <th>所属项目</th>
-                                    <th>时间</th>
-                                    <th>状态</th>
+                                    <th>创建时间</th>
+                                    <th>完成时间</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -95,7 +95,7 @@
                                     <td th:text="${task.stName}"></td>
                                     <td th:text="${task.item.stName}"></td>
                                     <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
-                                    <td >已完成</td>
+                                    <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>
                                 </tr>
                                 <!-- more data -->
                                 </tbody>

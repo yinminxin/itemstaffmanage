@@ -8,6 +8,7 @@ import com.wonders.itemstaffmanage.repository.TBStaffRepository;
 import com.wonders.itemstaffmanage.repository.TBTaskRepository;
 import com.wonders.itemstaffmanage.service.TBTaskService;
 import com.wonders.itemstaffmanage.utils.RandomCodeUtils;
+import com.wonders.itemstaffmanage.utils.TimeUtils;
 import com.wonders.itemstaffmanage.vo.AddTaskVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,9 @@ public class TBTaskServiceIpml implements TBTaskService {
     public void finishTaskById(String taskId) {
         TbTask task = tbTaskRepository.findById(taskId).get();
         task.setStState((byte) 1);
+        task.setDtFinishtime(new Date());
+        task.setNumFinishWeek(TimeUtils.getWeekOfYear());
+        task.setNumFinishYear(TimeUtils.getYear());
         tbTaskRepository.save(task);
     }
 
@@ -84,5 +88,13 @@ public class TBTaskServiceIpml implements TBTaskService {
             }
         }
         return tasks;
+    }
+
+    @Override
+    public List<TbTask> findAllByStStateAndNumFinishYearAndNumFinishWeek(byte state, String finishYear, String finishWeek) {
+        Integer year = Integer.valueOf(finishYear);
+        Integer week = Integer.valueOf(finishWeek);
+        List<TbTask> t = tbTaskRepository.findAllByStStateAndNumFinishYearAndNumFinishWeek(state, year, week);
+        return t;
     }
 }

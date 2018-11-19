@@ -6,6 +6,7 @@ import com.wonders.itemstaffmanage.entity.TbTask;
 import com.wonders.itemstaffmanage.service.TBItemService;
 import com.wonders.itemstaffmanage.service.TBStaffService;
 import com.wonders.itemstaffmanage.service.TBTaskService;
+import com.wonders.itemstaffmanage.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,11 @@ public class IndexController extends BaseController {
         DateFormat format = DateFormat.getDateInstance();
         String today = format.format(date);
 
+        int weekYear = TimeUtils.getYear();
+        int weekOfYear = TimeUtils.getWeekOfYear();
+        map.put("weekYear",weekYear);
+        map.put("weekOfYear",weekOfYear);
+
         TbStaff staff = tbStaffService.findByStaffId(staffId);
 
         List<TbItem> items=tbItemService.findAll();
@@ -51,11 +57,16 @@ public class IndexController extends BaseController {
             List<TbStaff> staffs=tbStaffService.findAll();
             for(TbStaff tbStaff :staffs){
                 int j=0;//进行中的任务
+                int f=0;
                 for(TbTask task : tbStaff.getTbTasks()){
                     if(task.getStState()==0){
                         j++;
                     }
+                    if(task.getStState()==1){
+                        f++;
+                    }
                 }
+                tbStaff.setTaskFinishNum(f);
                 tbStaff.setTaskNowNum(j);
             }
             map.put("staffs",staffs);

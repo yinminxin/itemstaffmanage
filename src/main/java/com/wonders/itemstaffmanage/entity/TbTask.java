@@ -13,6 +13,10 @@ public class TbTask implements Serializable{
     private String stName;
     private Date dtCreatetime;
     private byte stState;
+    private Date dtFinishtime;//任务完成时间
+    private Integer numFinishWeek;//任务完成是当前年的第几周
+    private Integer numFinishYear;//任务完成年份
+
 
     private TbItem item;
     private TbStaff staff;
@@ -74,4 +78,30 @@ public class TbTask implements Serializable{
         this.stState = stState;
     }
 
+    @Column(name = "DT_FINISHTIME")
+    public Date getDtFinishtime() {
+        return dtFinishtime;
+    }
+
+    public void setDtFinishtime(Date dtFinishtime) {
+        this.dtFinishtime = dtFinishtime;
+    }
+
+    @Column(name = "NUM_FINISHWEEK")
+    public Integer getNumFinishWeek() {
+        return numFinishWeek;
+    }
+
+    public void setNumFinishWeek(Integer numFinishWeek) {
+        this.numFinishWeek = numFinishWeek;
+    }
+
+    @Column(name = "NUM_FINISHYEAR")
+    public Integer getNumFinishYear() {
+        return numFinishYear;
+    }
+
+    public void setNumFinishYear(Integer numFinishYear) {
+        this.numFinishYear = numFinishYear;
+    }
 }

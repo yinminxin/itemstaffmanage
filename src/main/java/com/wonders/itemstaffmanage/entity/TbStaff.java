@@ -17,9 +17,19 @@ public class TbStaff implements Serializable{
     private short stRole;
 
     private int taskNowNum; //当前进行中的任务数
+    private int taskFinishNum; //当前已完成的任务数
 
     private List<TbTask> tbTasks = new ArrayList<>(0);
 
+
+    @Transient
+    public int getTaskFinishNum() {
+        return taskFinishNum;
+    }
+
+    public void setTaskFinishNum(int taskFinishNum) {
+        this.taskFinishNum = taskFinishNum;
+    }
 
     @Transient
     public int getTaskNowNum() {
