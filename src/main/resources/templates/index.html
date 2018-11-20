@@ -190,14 +190,14 @@
         <div class="am-modal-dialog">
             <div class="am-modal-hd">添加任务</div>
             <div class="am-modal-bd">
-                <select data-am-selected th:if="${user.stRole}==10" id="staffselect" >
+                <select data-am-selected="{maxHeight: 200}" th:if="${user.stRole}==10" id="staffselect" >
                     <option value="null" selected>人员选择</option>
                     <option th:each="staff:${staffs}" th:value="${staff.stId}" th:text="${staff.stName}"></option>
                 </select>
                 <select data-am-selected th:if="${user.stRole}==11" id="staffselect" >
                     <option th:value="${user.stId}" th:text="${user.stName}"></option>
                 </select>
-                <select data-am-selected id="itemselect">
+                <select data-am-selected="{maxHeight: 200}" id="itemselect">
                     <option value="null" selected>项目选择</option>
                     <option th:each="item:${items}" th:value="${item.stId}" th:text="${item.stName}"></option>
                 </select>
