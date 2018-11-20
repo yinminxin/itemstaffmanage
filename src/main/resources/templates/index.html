@@ -315,7 +315,7 @@
                                     </thead>
                                     <tbody>
                                     <tr class="gradeX" th:each="task:${staff.tbTasks}" th:if="${task.stState} == 0" >
-                                        <td th:text="${task.stName}"></td>
+                                        <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
                                         <!--<td th:text="${task.item.stName}"></td>-->
                                         <td th:text="${task.item.stName}"></td>
                                         <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
@@ -366,7 +366,7 @@
                                     </thead>
                                     <tbody>
                                     <tr class="gradeX" th:each="task:${staff.tbTasks}" th:if="${task.stState} == 1">
-                                        <td th:text="${task.stName}"></td>
+                                        <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
                                         <td th:text="${task.item.stName}"></td>
                                         <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
                                         <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>
@@ -405,7 +405,7 @@
                                     </thead>
                                     <tbody>
                                     <tr class="gradeX" th:each="task:${user.tbTasks}" th:if="${task.stState} == 0" >
-                                        <td th:text="${task.stName}"></td>
+                                        <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
                                         <td th:text="${task.item.stName}"></td>
                                         <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
                                         <td >进行中</td>
@@ -450,7 +450,7 @@
                                     </thead>
                                     <tbody>
                                     <tr class="gradeX" th:each="task:${user.tbTasks}" th:if="${task.stState} == 1">
-                                        <td th:text="${task.stName}"></td>
+                                        <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
                                         <td th:text="${task.item.stName}"></td>
                                         <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
                                         <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>
@@ -472,6 +472,20 @@
 <script src="assets/js/dataTables.responsive.min.js"></script>
 <script src="assets/js/app.js"></script>
 <script type="text/javascript">
+    $(function() {
+        getNikeName=function(ele){
+            nikeName=$(ele).attr("value");
+            $(ele).popover({
+                trigger: 'click focus',
+                content: nikeName,
+            });
+        };
+        getTableNikeName=function (ele) {
+            nikeName=$(ele).attr("value");
+            alert("任务名称 : "+nikeName);
+        }
+    });
+
     //添加任务
     $('#doc-prompt-toggle-task').on('click', function() {
         $('#my-prompt-task').modal({
@@ -632,7 +646,7 @@
     showWeekFinishTasks=function () {
         nowYear = $("#nowYear").val();
         nowWeek = $("#nowWeek").val();
-        $("#your-modal-html").modal();
+        $("#your-modal-html").modal({width:700,closeViaDimmer:false});
         getTaskOfWeek(nowYear,nowWeek);
     };
     //根据年和周获取周完成列表页面

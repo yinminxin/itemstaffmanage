@@ -47,7 +47,7 @@
                                 </thead>
                                 <tbody>
                                 <tr class="gradeX" th:each="task:${tasks}" th:if="${task.stState} == 0">
-                                    <td th:text="${task.stName}"></td>
+                                    <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
                                     <td th:text="${task.item.stName}"></td>
                                     <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
                                     <td >进行中</td>
@@ -92,7 +92,7 @@
                                 </thead>
                                 <tbody>
                                 <tr class="gradeX" th:each="task:${tasks}" th:if="${task.stState} == 1">
-                                    <td th:text="${task.stName}"></td>
+                                    <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
                                     <td th:text="${task.item.stName}"></td>
                                     <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
                                     <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>

@@ -17,7 +17,6 @@ public class TbTask implements Serializable{
     private Integer numFinishWeek;//任务完成是当前年的第几周
     private Integer numFinishYear;//任务完成年份
 
-
     private TbItem item;
     private TbStaff staff;
 
@@ -104,4 +103,5 @@ public class TbTask implements Serializable{
     public void setNumFinishYear(Integer numFinishYear) {
         this.numFinishYear = numFinishYear;
     }
+
 }

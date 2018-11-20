@@ -15,7 +15,7 @@
                     </thead>
                     <tbody>
                     <tr class="gradeX" th:each="task:${finishTasks}">
-                        <td th:text="${task.stName}"></td>
+                        <td th:value="${task.stName}"  onclick="getTableNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
                         <td th:text="${task.staff.stName}"></td>
                         <td th:text="${task.item.stName}"></td>
                         <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
