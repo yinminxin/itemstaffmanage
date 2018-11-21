@@ -7,17 +7,11 @@ import com.wonders.itemstaffmanage.repository.TBStaffRepository;
 import com.wonders.itemstaffmanage.repository.TBTaskRepository;
 import com.wonders.itemstaffmanage.service.TBStaffService;
 import com.wonders.itemstaffmanage.utils.MD5Utils;
-import com.wonders.itemstaffmanage.utils.RandomCodeUtils;
 import com.wonders.itemstaffmanage.vo.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class TBStaffServiceImpl implements TBStaffService {
@@ -35,15 +29,6 @@ public class TBStaffServiceImpl implements TBStaffService {
     public List<TbStaff> findAll() {
         byte state=0;
         List<TbStaff> all = tbStaffRepository.findAllByStState(state);
-//        List<TbStaff> tbStaffs = all.stream().filter(st -> st.getStState() == 0).collect(Collectors.toList());
-        /*for(TbStaff tbStaff : all){
-             List<TbTask> tbTasks = tbStaff.getTbTasks();
-           for(TbTask task : tbTasks){
-                TbTask task1 = tbTaskRepository.findById(task.getStId()).get();
-                task.getItem().setTbTasks(null);
-                task.setStaff(null);
-            }
-        }*/
         return all;
     }
 

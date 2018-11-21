@@ -1,7 +1,6 @@
 package com.wonders.itemstaffmanage.service;
 
 import com.wonders.itemstaffmanage.entity.TbItem;
-import com.wonders.itemstaffmanage.entity.TbStaff;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public interface TBItemService {
     /**
      * 根据项目名称查找项目
      * @param searchName
-     * @param b
+     * @param state
      * @return
      */
     TbItem findByStNameAndStState(String searchName, byte state);

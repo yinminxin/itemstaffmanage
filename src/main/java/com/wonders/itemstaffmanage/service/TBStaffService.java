@@ -39,5 +39,11 @@ public interface TBStaffService {
      */
     void updatePassword(LoginVo vo);
 
+    /**
+     * 根据用户名和状态查找人员
+     * @param searchName
+     * @param b
+     * @return
+     */
     TbStaff findOneByStNameAndStState(String searchName, byte b);
 }

@@ -27,7 +27,9 @@ public class IndexController extends BaseController {
     private TBTaskService tbTaskService;
     @RequestMapping("/index")
     public String findAllStaff1(Map<String,Object> map){
+        //获取session中的用户信息
         String staffId = (String) getSessionAttr("staff");
+        //判断用户是否存在,不存在跳转登陆页面
         if(staffId==null||staffId==""){
             return "redirect:/";
         }
@@ -43,7 +45,9 @@ public class IndexController extends BaseController {
         DateFormat format = DateFormat.getDateInstance();
         String today = format.format(date);
 
+        //当前年份
         int weekYear = TimeUtils.getYear();
+        //今天属于今年的第几周
         int weekOfYear = TimeUtils.getWeekOfYear();
         map.put("weekYear",weekYear);
         map.put("weekOfYear",weekOfYear);
@@ -57,14 +61,10 @@ public class IndexController extends BaseController {
             List<TbStaff> staffs=tbStaffService.findAll();
             for(TbStaff tbStaff :staffs){
                 int j=0;//进行中的任务
-                int f=0;
+                int f=0; //已完成的任务
                 for(TbTask task : tbStaff.getTbTasks()){
-                    if(task.getStState()==0){
-                        j++;
-                    }
-                    if(task.getStState()==1){
-                        f++;
-                    }
+                    if(task.getStState()==0){ j++; }
+                    if(task.getStState()==1){ f++; }
                 }
                 tbStaff.setTaskFinishNum(f);
                 tbStaff.setTaskNowNum(j);

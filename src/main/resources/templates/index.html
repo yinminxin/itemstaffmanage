@@ -163,6 +163,7 @@
     <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt-item">
         <div class="am-modal-dialog">
             <div class="am-modal-hd">添加项目</div>
+            <div class="addItemMsg" style="color: #be590a"></div>
             <div class="am-modal-bd">
                 <input type="text" class="am-modal-prompt-input" placeholder="新建项目名称">
             </div>
@@ -189,6 +190,7 @@
     <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt-task">
         <div class="am-modal-dialog">
             <div class="am-modal-hd">添加任务</div>
+            <div class="addTaskMsg" style="color: #be590a"></div>
             <div class="am-modal-bd">
                 <select data-am-selected="{maxHeight: 200}" th:if="${user.stRole}==10" id="staffselect" >
                     <option value="null" selected>人员选择</option>
@@ -213,6 +215,7 @@
     <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt-updatePassWord">
         <div class="am-modal-dialog">
             <div class="am-modal-hd">修改密码</div>
+            <div class="updatePasswordMsg" style="color: #be590a"></div>
             <div class="am-modal-bd">
                 <input type="text" class="am-modal-prompt-input" placeholder="输入新密码">
             </div>
@@ -476,31 +479,31 @@
         getNikeName=function(ele){
             nikeName=$(ele).attr("value");
             $(ele).popover({
-                trigger: 'click focus',
+                trigger: 'click',
                 content: nikeName,
             });
         };
-        getTableNikeName=function (ele) {
-            nikeName=$(ele).attr("value");
-            alert("任务名称 : "+nikeName);
-        }
     });
 
     //添加任务
     $('#doc-prompt-toggle-task').on('click', function() {
         $('#my-prompt-task').modal({
             relatedTarget: this,
+            closeOnConfirm:false,
             onConfirm: function(e) {
                 itemselect=$("#itemselect").val();
                 console.log(itemselect);
                 staffselect=$("#staffselect").val();
                 console.log(staffselect);
                 if(staffselect=="null"||staffselect==""||staffselect==null) {
-                    alert("请选择人员!");
+                    // alert("请选择人员!");
+                    $(".addTaskMsg").html("请选择人员!");
                 }else if(itemselect=="null"||itemselect==""||staffselect==null) {
-                    alert("请选择项目!");
+                    // alert("请选择项目!");
+                    $(".addTaskMsg").html("请选择项目!");
                 }else if(e.data==null||e.data==""){
-                    alert("任务名称不能为空!");
+                    // alert("任务名称不能为空!");
+                    $(".addTaskMsg").html("任务名称不能为空!");
                 }else {
                     $.ajax({
                         type: "POST",
@@ -514,11 +517,12 @@
                         },
                         success: function (message) {
                             // alert("添加成功！");
+                            $(".addTaskMsg").html("");
                             location.reload();
                         },
                         error: function (message) {
                             console.log(+message);
-                            alert("提交数据失败！");
+                            alert("系统忙！");
                             location.reload();
                         }
                     })
@@ -535,9 +539,11 @@
     $('#updatePassword').on('click', function() {
         $('#my-prompt-updatePassWord').modal({
             relatedTarget: this,
+            closeOnConfirm:false,
             onConfirm: function(e) {
                 if(e.data==null||e.data==""){
-                    alert("密码不能为空!");
+                    // alert("密码不能为空!");
+                    $(".updatePasswordMsg").html("密码不能为空!");
                 }else {
                     $.ajax({
                         type: "POST",
@@ -549,12 +555,13 @@
                             "stPassword": e.data
                         },
                         success: function (message) {
+                            $(".updatePasswordMsg").html("");
                             alert("更改成功！重新登陆");
                             window.location.href = "/";
                         },
                         error: function (message) {
                             console.log(+message);
-                            alert("更改失败失败！");
+                            alert("系统忙！");
                             location.reload();
                         }
                     });
@@ -571,9 +578,11 @@
     $('#doc-prompt-toggle-item').on('click', function() {
         $('#my-prompt-item').modal({
             relatedTarget: this,
+            closeOnConfirm:false,
             onConfirm: function(e) {
                 if(e.data==null||e.data==""){
-                    alert("项目名不能为空!");
+                    // alert("项目名不能为空!");
+                    $(".addItemMsg").html("项目名不能为空!");
                 }else{
                     $.ajax({
                         type: "POST",
@@ -589,7 +598,7 @@
                         },
                         error: function (message) {
                             console.log(+message);
-                            alert("提交数据失败！");
+                            alert("系统忙！");
                             location.reload();
                         }
                     });
