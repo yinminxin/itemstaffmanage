@@ -20,6 +20,8 @@
     <script src="assets/js/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
+    <script src="assets/js/handlebars.min.js"></script>
+    <script src="assets/js/amazeui.widgets.helper.min.js"></script>
     <!-- jQuery -->
     <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 
@@ -27,7 +29,14 @@
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 
 </head>
-
+<style>
+    .amz-toolbar {
+        position: fixed;
+        right: 20px;
+        bottom: 30px;
+        z-index: 999;
+    }
+</style>
 <body data-type="index" class="theme-white">
 <!--<script src="assets/js/theme.js"></script>-->
 <div class="am-g tpl-g">
@@ -468,8 +477,14 @@
 
             </div>
         </div>
+
+        <div class="amz-toolbar" id="amz-toolbar" hidden>
+            <a href="#top" title="回到顶部" class="am-icon-btn am-icon-arrow-up am-active" id="amz-go-top"></a>
+        </div>
     </div>
+
 </div>
+
 <script src="assets/js/amazeui.min.js"></script>
 <script src="assets/js/amazeui.datatables.min.js"></script>
 <script src="assets/js/dataTables.responsive.min.js"></script>
@@ -485,6 +500,13 @@
         };
     });
 
+    $(window).scroll(function () {
+        if($(window).scrollTop()<=20){
+            $(".amz-toolbar").hide();
+        }else{
+            $(".amz-toolbar").show();
+        }
+    })
     //添加任务
     $('#doc-prompt-toggle-task').on('click', function() {
         $('#my-prompt-task').modal({
