@@ -500,6 +500,11 @@
 <script src="assets/js/app.js"></script>
 <script type="text/javascript">
     $(function() {
+        $(document).keydown(function(event){
+            if(event.keyCode==13){
+                $("#searchButton").click();
+            }
+        });
         getNikeName=function(ele){
             nikeName=$(ele).attr("value");
             $(ele).popover({
