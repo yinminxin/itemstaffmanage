@@ -6,6 +6,7 @@ import com.wonders.itemstaffmanage.entity.TbTask;
 import com.wonders.itemstaffmanage.service.TBItemService;
 import com.wonders.itemstaffmanage.service.TBStaffService;
 import com.wonders.itemstaffmanage.service.TBTaskService;
+import com.wonders.itemstaffmanage.utils.GetFinishProceedTasksNumUtil;
 import com.wonders.itemstaffmanage.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,6 +73,9 @@ public class IndexController extends BaseController {
             map.put("staffs",staffs);
         }else{
             tasks = staff.getTbTasks();
+            if(staff.getTbTasks().size()>0){
+                staff = GetFinishProceedTasksNumUtil.setStaffTasksNum(staff);
+            }
         }
         if(!tasks.isEmpty()){
             for(TbTask task : tasks){

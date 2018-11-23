@@ -402,6 +402,11 @@
                                 <button type="button" th:value="${staff.stId}" class="am-btn am-btn-primary js-modal-open" onclick="findFinishTask(this)">已完成任务</button>
                             </div>-->
                         </div>
+                        <div>
+                            <div style="float: right">
+                                当前进行中的任务数 : [[${user.taskNowNum}]]
+                            </div>
+                        </div>
                         <div class="widget-body  am-fr">
                             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
                                 <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r"
@@ -446,6 +451,11 @@
                             <div style="float: left">
                             <span th:text="${user.stName}">
                             </span>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="float: right">
+                                已完成的任务数 : [[${user.taskFinishNum}]]
                             </div>
                         </div>
                         <div class="widget-body  am-fr">

@@ -12,6 +12,9 @@ public class TbItem implements Serializable{
     private byte stState;
     private Date stCreatetime;
 
+    private int taskNowNum; //当前进行中的任务数
+    private int taskFinishNum; //当前已完成的任务数
+
     private List<TbTask> tbTasks = new ArrayList<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "item")
@@ -60,5 +63,21 @@ public class TbItem implements Serializable{
         this.stCreatetime = stCreatetime;
     }
 
+    @Transient
+    public int getTaskNowNum() {
+        return taskNowNum;
+    }
 
+    public void setTaskNowNum(int taskNowNum) {
+        this.taskNowNum = taskNowNum;
+    }
+
+    @Transient
+    public int getTaskFinishNum() {
+        return taskFinishNum;
+    }
+
+    public void setTaskFinishNum(int taskFinishNum) {
+        this.taskFinishNum = taskFinishNum;
+    }
 }

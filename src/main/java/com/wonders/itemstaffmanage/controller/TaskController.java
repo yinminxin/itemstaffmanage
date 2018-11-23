@@ -6,6 +6,7 @@ import com.wonders.itemstaffmanage.entity.TbTask;
 import com.wonders.itemstaffmanage.service.TBItemService;
 import com.wonders.itemstaffmanage.service.TBStaffService;
 import com.wonders.itemstaffmanage.service.TBTaskService;
+import com.wonders.itemstaffmanage.utils.GetFinishProceedTasksNumUtil;
 import com.wonders.itemstaffmanage.vo.AddTaskVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -76,6 +77,7 @@ public class TaskController {
 //        List<TbItem> items=tbItemService.findAll();
         TbItem item=tbItemService.findByItemId(itemId);
         if(item.getTbTasks().size()>0){
+            item = GetFinishProceedTasksNumUtil.setItemTasksNum(item);
             tasks.addAll(item.getTbTasks());
             map.put("tasks",tasks);
         }
@@ -90,6 +92,7 @@ public class TaskController {
 //        List<TbItem> items=tbItemService.findAll();
         TbStaff staff=tbStaffService.findByStaffId(staffId);
         if(staff.getTbTasks().size()>0){
+            staff = GetFinishProceedTasksNumUtil.setStaffTasksNum(staff);
             tasks.addAll(staff.getTbTasks());
             map.put("tasks",tasks);
         }
@@ -102,6 +105,7 @@ public class TaskController {
         TbItem item=tbItemService.findByStNameAndStState(searchName,(byte)0);
         if (!StringUtils.isEmpty(item)) {
             if(item.getTbTasks().size()>0){
+                item = GetFinishProceedTasksNumUtil.setItemTasksNum(item);
                 tasks.addAll(item.getTbTasks());
                 map.put("tasks",tasks);
             }
@@ -111,6 +115,7 @@ public class TaskController {
         TbStaff staff=tbStaffService.findOneByStNameAndStState(searchName,(byte)0);
         if(!StringUtils.isEmpty(staff)){
             if(staff.getTbTasks().size()>0){
+                staff = GetFinishProceedTasksNumUtil.setStaffTasksNum(staff);
                 tasks.addAll(staff.getTbTasks());
                 map.put("tasks",tasks);
             }
@@ -128,6 +133,7 @@ public class TaskController {
         TbStaff staff=tbStaffService.findByStaffId(loadId);
         if(!StringUtils.isEmpty(staff)){
             if(staff.getTbTasks().size()>0){
+                staff = GetFinishProceedTasksNumUtil.setStaffTasksNum(staff);
                 tasks.addAll(staff.getTbTasks());
                 map.put("tasks",tasks);
             }
@@ -136,6 +142,7 @@ public class TaskController {
         }
         TbItem item=tbItemService.findByItemId(loadId);
         if(item.getTbTasks().size()>0){
+            item = GetFinishProceedTasksNumUtil.setItemTasksNum(item);
             tasks.addAll(item.getTbTasks());
             map.put("tasks",tasks);
         }
