@@ -1,6 +1,5 @@
 <div class="am-g tpl-g">
 
-
     <!-- 内容区域 -->
     <div class="container-fluid am-cf"  style="padding: 25px">
         <div class="row">
@@ -40,7 +39,7 @@
                     </div>
                     <div class="widget-body  am-fr">
                         <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                            <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r ">
+                            <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r ">
                                 <thead>
                                 <tr>
                                     <th>任务名称</th>
@@ -90,7 +89,7 @@
                     </div>
                     <div class="widget-body  am-fr">
                         <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                            <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r"
+                            <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r"
                             >
                                 <thead>
                                 <tr>
@@ -124,32 +123,40 @@
 <script>
     $(function () {
         $('.example-r').DataTable({
-
+            bRetrieve: true,
+            paging: false,
+            searching:false,
             bInfo: false, //页脚信息
-            dom: 'ti'
         });
     });
     deleteStaff=function (ele) {
         staffDelId  = ele.value;
-        $.ajax({
-            type: "POST",
-            url: "staff/deleteStaff",
-            // contentType: "application/json; charset=utf-8",
-            // data: JSON.stringify(GetJsonData()),
-            data: {"staffId": staffDelId},
-            // dataType: "json",
-            success: function (message) {
-                alert("删除成功！");
-                location.reload();
+        $('#my-confirm-staff').modal({
+            relatedTarget: this,
+            onConfirm: function(options) {
+                $.ajax({
+                    type: "POST",
+                    url: "staff/deleteStaff",
+                    // contentType: "application/json; charset=utf-8",
+                    // data: JSON.stringify(GetJsonData()),
+                    data: {"staffId": staffDelId},
+                    // dataType: "json",
+                    success: function (message) {
+                        alert("删除成功！");
+                        location.reload();
+                    },
+                    error: function (message) {
+                        console.log(+message);
+                        //$("#request-process-patent").html("提交数据失败！");
+                        alert("删除失败！");
+                        location.reload();
+                    }
+                });
             },
-            error: function (message) {
-                console.log(+message);
-                //$("#request-process-patent").html("提交数据失败！");
-                alert("删除失败！");
-                location.reload();
+            // closeOnConfirm: false,
+            onCancel: function() {
             }
         });
-
     }
 </script>
 </body>

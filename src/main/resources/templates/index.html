@@ -254,6 +254,62 @@
         </div>
     </div>
     <!--弹窗-->
+    <!--完成任务提示弹窗-->
+    <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm-finish">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                你，确定要完成这条任务吗？
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+            </div>
+        </div>
+    </div>
+    <!--完成任务提示弹窗-->
+    <!--删除任务提示弹窗-->
+    <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm-delete">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                你，确定要删除这条任务吗？
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+            </div>
+        </div>
+    </div>
+    <!--删除任务提示弹窗-->
+    <!--删除人员提示弹窗-->
+    <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm-staff">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                你，确定要删除这个人员吗？
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+            </div>
+        </div>
+    </div>
+    <!--删除人员提示弹窗-->
+    <!--删除项目提示弹窗-->
+    <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm-item">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                你，确定要删除这个项目吗？
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+            </div>
+        </div>
+    </div>
+    <!--删除项目提示弹窗-->
 
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
@@ -314,7 +370,7 @@
                         </div>
                         <div class="widget-body  am-fr">
                             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r"
+                                <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r"
                                        >
                                     <thead>
                                     <tr>
@@ -366,8 +422,7 @@
                         </div>
                         <div class="widget-body  am-fr">
                             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r "
-                                >
+                                <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r ">
                                     <thead>
                                     <tr>
                                         <th>任务名称</th>
@@ -409,7 +464,7 @@
                         </div>
                         <div class="widget-body  am-fr">
                             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r"
+                                <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r"
                                 >
                                     <thead>
                                     <tr>
@@ -460,7 +515,7 @@
                         </div>
                         <div class="widget-body  am-fr">
                             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r ">
+                                <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r ">
                                     <thead>
                                     <tr>
                                         <th>任务名称</th>
@@ -497,9 +552,15 @@
 <script src="assets/js/amazeui.min.js"></script>
 <script src="assets/js/amazeui.datatables.min.js"></script>
 <script src="assets/js/dataTables.responsive.min.js"></script>
-<script src="assets/js/app.js"></script>
+<!--<script src="assets/js/app.js"></script>-->
 <script type="text/javascript">
     $(function() {
+        $('.example-r').DataTable({
+            bRetrieve: true,
+            paging: false,
+            searching:false,
+            bInfo: false, //页脚信息
+        });
         $(document).keydown(function(event){
             if(event.keyCode==13){
                 $("#searchButton").click();
@@ -755,28 +816,36 @@
     }
     //完成任务
     finishTask=function (ele) {
-        tdeleteid=ele.value;
-        $.ajax({
-            type: "POST",
-            url: "task/finishTask",
-            // contentType: "application/json; charset=utf-8",
-            // data: JSON.stringify(GetJsonData()),
-            data: {"taskId": tdeleteid},
-            // dataType: "json",
-            success: function (message) {
-                alert("已添加至完成任务！");
-                a_href=$("a[class*=active]").not(".list").attr("href");
-                if(a_href=="index"){
-                    location.reload();
-                }else{
-                    loadTable();
-                }
+        tfinishid=ele.value;
+        $('#my-confirm-finish').modal({
+            relatedTarget: this,
+            onConfirm: function(options) {
+                $.ajax({
+                    type: "POST",
+                    url: "task/finishTask",
+                    // contentType: "application/json; charset=utf-8",
+                    // data: JSON.stringify(GetJsonData()),
+                    data: {"taskId": tfinishid},
+                    // dataType: "json",
+                    success: function (message) {
+                        alert("已添加至完成任务！");
+                        a_href=$("a[class*=active]").not(".list").attr("href");
+                        if(a_href=="index"){
+                            location.reload();
+                        }else{
+                            loadTable();
+                        }
+                    },
+                    error: function (message) {
+                        //$("#request-process-patent").html("提交数据失败！");
+                        console.log(+message);
+                        alert("添加至完成任务失败！");
+                        location.reload();
+                    }
+                });
             },
-            error: function (message) {
-                //$("#request-process-patent").html("提交数据失败！");
-                console.log(+message);
-                alert("添加至完成任务失败！");
-                location.reload();
+            // closeOnConfirm: false,
+            onCancel: function() {
             }
         });
     };
@@ -829,28 +898,37 @@
     // 删除任务
     deleteTask=function (ele) {
         tdeleteid=ele.value;
-        $.ajax({
-            type: "POST",
-            url: "task/deleteTask",
-            // contentType: "application/json; charset=utf-8",
-            // data: JSON.stringify(GetJsonData()),
-            data: {"taskId": tdeleteid},
-            // dataType: "json",
-            success: function (message) {
-                alert("删除成功！");
-                a_href=$("a[class*=active]").not(".list").attr("href");
-                if(a_href=="index"){
-                    location.reload();
-                }else{
-                    loadTable();
-                }
+        $('#my-confirm-delete').modal({
+            relatedTarget: this,
+            onConfirm: function(options) {
+                $.ajax({
+                    type: "POST",
+                    url: "task/deleteTask",
+                    // contentType: "application/json; charset=utf-8",
+                    // data: JSON.stringify(GetJsonData()),
+                    data: {"taskId": tdeleteid},
+                    // dataType: "json",
+                    success: function (message) {
+                        alert("删除成功！");
+                        a_href=$("a[class*=active]").not(".list").attr("href");
+                        if(a_href=="index"){
+                            location.reload();
+                        }else{
+                            loadTable();
+                        }
+                    },
+                    error: function (message) {
+                        console.log(+message);
+                        alert("删除失败！");
+                        location.reload();
+                    }
+                });
             },
-            error: function (message) {
-                console.log(+message);
-                alert("删除失败！");
-                location.reload();
+            // closeOnConfirm: false,
+            onCancel: function() {
             }
         });
+
     };
     $(".list").on("click",function () {
         $("a").removeClass("active");
@@ -924,6 +1002,12 @@
         var allwk = Math.ceil((yt-d.getDay())/7.0);
         return allwk;
     }
+    // 侧边菜单
+    $('.sidebar-nav-sub-title').on('click', function() {
+        $(this).siblings('.sidebar-nav-sub').slideToggle(80)
+            .end()
+            .find('.sidebar-nav-sub-ico').toggleClass('sidebar-nav-sub-ico-rotate');
+    })
 </script>
 </body>
 

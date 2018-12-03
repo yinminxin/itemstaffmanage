@@ -20,7 +20,7 @@
     <div class="widget am-cf widget-body-lg">
         <div class="widget-body  am-fr">
             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black example-r "
+                <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r "
                 >
                     <thead>
                     <tr>
@@ -50,8 +50,10 @@
     $(function () {
         $('.example-r').DataTable({
             bRetrieve: true,
+            paging: false,
+            searching:false,
             bInfo: false, //页脚信息
-            dom: 'ti'
+            // dom: 'ti'
         });
     });
 </script>
