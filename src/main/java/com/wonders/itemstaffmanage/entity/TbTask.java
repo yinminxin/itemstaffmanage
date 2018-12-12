@@ -2,9 +2,7 @@ package com.wonders.itemstaffmanage.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tb_task", catalog = "itemstaffmanage")

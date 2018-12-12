@@ -311,6 +311,15 @@
     </div>
     <!--删除项目提示弹窗-->
 
+    <div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="my-modal-loading">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd" id="loadingmag">正在载入...</div>
+            <div class="am-modal-bd" id="loadingicon">
+                <span class="am-icon-spinner am-icon-spin"></span>
+            </div>
+        </div>
+    </div>
+
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
 
@@ -615,12 +624,14 @@
                         success: function (message) {
                             // alert("添加成功！");
                             $(".addTaskMsg").html("");
-                            location.reload();
+                            $("#my-prompt-task").modal("close");
+                            $('#my-prompt-task').on('closed.modal.amui', function(){
+                                closereload("添加成功","reload");
+                            });
                         },
                         error: function (message) {
-                            console.log(+message);
-                            alert("系统忙！");
-                            location.reload();
+                            // console.log(+message);
+                            closereload("系统忙！请稍后再试","reload");
                         }
                     })
                 }
@@ -653,13 +664,18 @@
                         },
                         success: function (message) {
                             $(".updatePasswordMsg").html("");
-                            alert("更改成功！重新登陆");
-                            window.location.href = "/";
+                            $("#my-prompt-updatePassWord").modal("close");
+                            $('#my-prompt-updatePassWord').on('closed.modal.amui', function(){
+                                closereload("更改成功！重新登陆...","/");
+                            });
+
                         },
                         error: function (message) {
-                            console.log(+message);
-                            alert("系统忙！");
-                            location.reload();
+                            // console.log(+message);
+                            $("#my-prompt-updatePassWord").modal("close");
+                            $('#my-prompt-updatePassWord').on('closed.modal.amui', function(){
+                                closereload("系统忙！请稍后再试","reload");
+                            });
                         }
                     });
                 }
@@ -690,13 +706,22 @@
                             "itemName": e.data || ""
                         },
                         success: function (message) {
-                            alert("项目添加成功！");
-                            location.reload();
+                            // alert("项目添加成功！");
+                            // location.reload();
+                            $("#my-prompt-item").modal("close");
+                            $('#my-prompt-item').on('closed.modal.amui', function(){
+                                closereload("项目添加成功！","reload");
+                            });
+
                         },
                         error: function (message) {
-                            console.log(+message);
-                            alert("系统忙！");
-                            location.reload();
+                            // console.log(+message);
+                            // alert("系统忙！");
+                            // location.reload();
+                            $("#my-prompt-item").modal("close");
+                            $('#my-prompt-item').on('closed.modal.amui', function(){
+                                closereload("系统忙！请稍后再试","reload");
+                            });
                         }
                     });
                 }
@@ -771,7 +796,8 @@
                 $("#my-modal-html").html(message);
             },
             error: function (message) {
-                alert("失败了");
+                // alert("失败了");
+                closereload("系统忙！请稍后再试","reload");
                 // location.reload();
             }
         });
@@ -828,19 +854,26 @@
                     data: {"taskId": tfinishid},
                     // dataType: "json",
                     success: function (message) {
-                        alert("已添加至完成任务！");
+                        // alert("已添加至完成任务！");
                         a_href=$("a[class*=active]").not(".list").attr("href");
-                        if(a_href=="index"){
-                            location.reload();
-                        }else{
-                            loadTable();
-                        }
+                        $("#my-confirm-finish").modal("close");
+                        $('#my-confirm-finish').on('closed.modal.amui', function(){
+                            if(a_href=="index"){
+                                // location.reload();
+                                closereload("已添加至完成任务！","reload");
+                            }else{
+                                // loadTable();
+                                closereload("已添加至完成任务！","loadTable");
+                            }
+                        });
+
                     },
                     error: function (message) {
                         //$("#request-process-patent").html("提交数据失败！");
-                        console.log(+message);
-                        alert("添加至完成任务失败！");
-                        location.reload();
+                        // console.log(+message);
+                        // alert("添加至完成任务失败！");
+                        // location.reload();
+                        closereload("系统忙！请稍后再试","reload");
                     }
                 });
             },
@@ -866,9 +899,10 @@
                 $(".tpl-content-wrapper").html(message);
             },
             error: function (message) {
-                alert("系统忙！");
-                console.log(+message);
-                location.reload();
+                // alert("系统忙！");
+                // console.log(+message);
+                // location.reload();
+                closereload("系统忙！请稍后再试","reload");
             }
         });
     };
@@ -889,9 +923,10 @@
                 $(".tpl-content-wrapper").html(message);
             },
             error: function (message) {
-                console.log(+message);
-                alert("系统忙！");
-                location.reload();
+                // console.log(+message);
+                // alert("系统忙！");
+                // location.reload();
+                closereload("系统忙！请稍后再试","reload");
             }
         });
     };
@@ -909,18 +944,24 @@
                     data: {"taskId": tdeleteid},
                     // dataType: "json",
                     success: function (message) {
-                        alert("删除成功！");
+                        // alert("删除成功！");
                         a_href=$("a[class*=active]").not(".list").attr("href");
-                        if(a_href=="index"){
-                            location.reload();
-                        }else{
-                            loadTable();
-                        }
+                        $("#my-confirm-delete").modal("close");
+                        $('#my-confirm-delete').on('closed.modal.amui', function(){
+                            if(a_href=="index"){
+                                // location.reload();
+                                closereload("删除成功！","reload");
+                            }else{
+                                // loadTable();
+                                closereload("删除成功！","loadTable");
+                            }
+                        });
                     },
                     error: function (message) {
-                        console.log(+message);
-                        alert("删除失败！");
-                        location.reload();
+                        // console.log(+message);
+                        // alert("删除失败！");
+                        // location.reload();
+                        closereload("系统忙！请稍后再试","reload");
                     }
                 });
             },
@@ -928,7 +969,6 @@
             onCancel: function() {
             }
         });
-
     };
     $(".list").on("click",function () {
         $("a").removeClass("active");
@@ -936,6 +976,47 @@
         $(this).addClass("active");
         $(this).find("a:eq(0)").addClass("active");
     });
+    //自动关闭的弹窗
+    /*  注意:如果在弹窗页面调用这个弹窗提示,需要先关闭当前弹窗
+        模板:
+                        $("#my-confirm-finish").modal("close");
+                        $('#my-confirm-finish').on('closed.modal.amui', function(){
+                            if(a_href=="index"){
+                                // location.reload();
+                                closereload("已添加至完成任务！","reload");
+                            }else{
+                                // loadTable();
+                                closereload("已添加至完成任务！","loadTable");
+                            }
+                        });
+        finish:处理完成的提示信息;
+        choose:不传这个参数,弹窗结束就结束了
+            1.choose为"reload"的时候,弹窗结束后重新加载页面;
+            2.choose为"loadTable"的时候,弹窗结束后根据所在页面刷新表格信息
+            3.choose为地址的时候,弹窗结束后跳转地址
+     */
+    closereload=function (finish,choose) {
+        $("#loadingmag").html("正在处理");
+        $("#my-modal-loading").modal({dimmer:false});
+        $('#my-modal-loading').on('opened.modal.amui', function(){
+            setTimeout(function () {
+                $("#loadingmag").html(finish);
+                $("#loadingicon span").remove();
+                setTimeout(function () {
+                    if(choose){
+                        if("reload"==choose){
+                            location.reload();
+                        }else if("loadTable"==choose){
+                            loadTable();
+                        }else {
+                            window.location.href = choose;
+                        }
+                    }
+                    $("#my-modal-loading").modal("close");
+                },500);
+            },500);
+        });
+    };
     //刷新table
     loadTable=function () {
         loadId = $("a[class*=active]").not(".list").attr("value");
@@ -950,9 +1031,10 @@
                 $(".tpl-content-wrapper").html(message);
             },
             error: function (message) {
-                console.log(+message);
-                alert("系统忙！");
-                location.reload();
+                // console.log(+message);
+                // alert("系统忙！");
+                // location.reload();
+                closereload("系统忙！请稍后再试","");
             }
         });
     };

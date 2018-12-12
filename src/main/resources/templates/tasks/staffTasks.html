@@ -142,14 +142,16 @@
                     data: {"staffId": staffDelId},
                     // dataType: "json",
                     success: function (message) {
-                        alert("删除成功！");
-                        location.reload();
+                        // alert("删除成功！");
+                        // location.reload();
+                        closereload("删除成功！","reload");
                     },
                     error: function (message) {
-                        console.log(+message);
+                        // console.log(+message);
                         //$("#request-process-patent").html("提交数据失败！");
-                        alert("删除失败！");
-                        location.reload();
+                        // alert("删除失败！");
+                        // location.reload();
+                        closereload("系统忙！请稍后再试","reload");
                     }
                 });
             },
