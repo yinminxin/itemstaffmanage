@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TBStaffRepository extends JpaRepository<TbStaff,String>,JpaSpecificationExecutor<TbStaff> {
 
-    @Query(value = "select * from tb_staff where ST_USERNAME=:username and ST_PASSWORD=:password and ST_STATE=0",nativeQuery = true)
+    @Query(value = "select * from tb_staff where binary  ST_USERNAME=:username and ST_PASSWORD=:password and ST_STATE=0",nativeQuery = true)
     TbStaff findByUsernameAndPassword(@Param("username") String username,@Param("password") String password);
 
 

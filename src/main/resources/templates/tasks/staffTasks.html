@@ -134,6 +134,7 @@
         $('#my-confirm-staff').modal({
             relatedTarget: this,
             onConfirm: function(options) {
+                rundialog();
                 $.ajax({
                     type: "POST",
                     url: "staff/deleteStaff",
@@ -144,14 +145,14 @@
                     success: function (message) {
                         // alert("删除成功！");
                         // location.reload();
-                        closereload("删除成功！","reload");
+                        finishdialog("删除成功！","reload");
                     },
                     error: function (message) {
                         // console.log(+message);
                         //$("#request-process-patent").html("提交数据失败！");
                         // alert("删除失败！");
                         // location.reload();
-                        closereload("系统忙！请稍后再试","reload");
+                        finishdialog("系统忙！请稍后再试","reload");
                     }
                 });
             },

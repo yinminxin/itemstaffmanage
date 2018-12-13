@@ -130,6 +130,7 @@
         $('#my-confirm-item').modal({
             relatedTarget: this,
             onConfirm: function(options) {
+                rundialog();
                 $.ajax({
                     type: "POST",
                     url: "item/deleteItem",
@@ -140,14 +141,14 @@
                     success: function (message) {
                         // alert("删除成功！");
                         // location.reload();
-                        closereload("删除成功！","reload");
+                        finishdialog("删除成功！","reload");
                     },
                     error: function (message) {
                         // console.log(+message);
                         //$("#request-process-patent").html("提交数据失败！");
                         // alert("该项目可能还有任务,请确认！");
                         // location.reload();
-                        closereload("该项目可能还有任务,请确认！","loadTable");
+                        finishdialog("该项目可能还有任务,请确认！","loadTable");
                     }
                 });
             },

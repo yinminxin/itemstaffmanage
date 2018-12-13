@@ -598,9 +598,7 @@
             closeOnConfirm:false,
             onConfirm: function(e) {
                 itemselect=$("#itemselect").val();
-                console.log(itemselect);
                 staffselect=$("#staffselect").val();
-                console.log(staffselect);
                 if(staffselect=="null"||staffselect==""||staffselect==null) {
                     // alert("请选择人员!");
                     $(".addTaskMsg").html("请选择人员!");
@@ -611,6 +609,9 @@
                     // alert("任务名称不能为空!");
                     $(".addTaskMsg").html("任务名称不能为空!");
                 }else {
+                    $(".addTaskMsg").html("");
+                    $("#my-prompt-task").modal("close");
+                    rundialog();
                     $.ajax({
                         type: "POST",
                         url: "task/addTask",
@@ -622,16 +623,11 @@
                             "taskName": e.data || ""
                         },
                         success: function (message) {
-                            // alert("添加成功！");
-                            $(".addTaskMsg").html("");
-                            $("#my-prompt-task").modal("close");
-                            $('#my-prompt-task').on('closed.modal.amui', function(){
-                                closereload("添加成功","reload");
-                            });
+                            finishdialog("添加成功","reload");
                         },
                         error: function (message) {
                             // console.log(+message);
-                            closereload("系统忙！请稍后再试","reload");
+                            finishdialog("系统忙！请稍后再试","reload");
                         }
                     })
                 }
@@ -653,6 +649,10 @@
                     // alert("密码不能为空!");
                     $(".updatePasswordMsg").html("密码不能为空!");
                 }else {
+                    $(".updatePasswordMsg").html("");
+                    $("#my-prompt-updatePassWord").modal("close");
+                    rundialog();
+                    // closereload("更改成功！重新登陆...","/");
                     $.ajax({
                         type: "POST",
                         url: "staff/updatePassword",
@@ -663,19 +663,11 @@
                             "stPassword": e.data
                         },
                         success: function (message) {
-                            $(".updatePasswordMsg").html("");
-                            $("#my-prompt-updatePassWord").modal("close");
-                            $('#my-prompt-updatePassWord').on('closed.modal.amui', function(){
-                                closereload("更改成功！重新登陆...","/");
-                            });
-
+                            finishdialog("更改成功！重新登陆...","/")
                         },
                         error: function (message) {
                             // console.log(+message);
-                            $("#my-prompt-updatePassWord").modal("close");
-                            $('#my-prompt-updatePassWord').on('closed.modal.amui', function(){
-                                closereload("系统忙！请稍后再试","reload");
-                            });
+                            finishdialog("系统忙！请稍后再试","reload");
                         }
                     });
                 }
@@ -697,6 +689,9 @@
                     // alert("项目名不能为空!");
                     $(".addItemMsg").html("项目名不能为空!");
                 }else{
+                    $("#my-prompt-item").modal("close");
+                    rundialog();
+                    // closereload("项目添加成功！","reload");
                     $.ajax({
                         type: "POST",
                         url: "item/addItem",
@@ -708,20 +703,13 @@
                         success: function (message) {
                             // alert("项目添加成功！");
                             // location.reload();
-                            $("#my-prompt-item").modal("close");
-                            $('#my-prompt-item').on('closed.modal.amui', function(){
-                                closereload("项目添加成功！","reload");
-                            });
-
+                            finishdialog("项目添加成功！","reload");
                         },
                         error: function (message) {
                             // console.log(+message);
                             // alert("系统忙！");
                             // location.reload();
-                            $("#my-prompt-item").modal("close");
-                            $('#my-prompt-item').on('closed.modal.amui', function(){
-                                closereload("系统忙！请稍后再试","reload");
-                            });
+                            finishdialog("系统忙！请稍后再试","reload");
                         }
                     });
                 }
@@ -797,8 +785,8 @@
             },
             error: function (message) {
                 // alert("失败了");
-                closereload("系统忙！请稍后再试","reload");
-                // location.reload();
+                showdialog("系统忙！请稍后再试");
+                location.reload();
             }
         });
     }
@@ -846,6 +834,8 @@
         $('#my-confirm-finish').modal({
             relatedTarget: this,
             onConfirm: function(options) {
+                $("#my-confirm-finish").modal("close");
+                rundialog();
                 $.ajax({
                     type: "POST",
                     url: "task/finishTask",
@@ -856,24 +846,20 @@
                     success: function (message) {
                         // alert("已添加至完成任务！");
                         a_href=$("a[class*=active]").not(".list").attr("href");
-                        $("#my-confirm-finish").modal("close");
-                        $('#my-confirm-finish').on('closed.modal.amui', function(){
-                            if(a_href=="index"){
-                                // location.reload();
-                                closereload("已添加至完成任务！","reload");
-                            }else{
-                                // loadTable();
-                                closereload("已添加至完成任务！","loadTable");
-                            }
-                        });
-
+                        if(a_href=="index"){
+                            // location.reload();
+                            finishdialog("已添加至完成任务！","reload");
+                        }else{
+                            // loadTable();
+                            finishdialog("已添加至完成任务！","loadTable");
+                        }
                     },
                     error: function (message) {
                         //$("#request-process-patent").html("提交数据失败！");
                         // console.log(+message);
                         // alert("添加至完成任务失败！");
                         // location.reload();
-                        closereload("系统忙！请稍后再试","reload");
+                        finishdialog("系统忙！请稍后再试","reload");
                     }
                 });
             },
@@ -899,10 +885,10 @@
                 $(".tpl-content-wrapper").html(message);
             },
             error: function (message) {
+                showdialog("系统忙！请稍后再试");
                 // alert("系统忙！");
                 // console.log(+message);
-                // location.reload();
-                closereload("系统忙！请稍后再试","reload");
+                location.reload();
             }
         });
     };
@@ -924,9 +910,9 @@
             },
             error: function (message) {
                 // console.log(+message);
+                showdialog("系统忙！请稍后再试");
                 // alert("系统忙！");
-                // location.reload();
-                closereload("系统忙！请稍后再试","reload");
+                location.reload();
             }
         });
     };
@@ -936,6 +922,8 @@
         $('#my-confirm-delete').modal({
             relatedTarget: this,
             onConfirm: function(options) {
+                $("#my-confirm-delete").modal("close");
+                rundialog();
                 $.ajax({
                     type: "POST",
                     url: "task/deleteTask",
@@ -946,22 +934,19 @@
                     success: function (message) {
                         // alert("删除成功！");
                         a_href=$("a[class*=active]").not(".list").attr("href");
-                        $("#my-confirm-delete").modal("close");
-                        $('#my-confirm-delete').on('closed.modal.amui', function(){
-                            if(a_href=="index"){
-                                // location.reload();
-                                closereload("删除成功！","reload");
-                            }else{
-                                // loadTable();
-                                closereload("删除成功！","loadTable");
-                            }
-                        });
+                        if(a_href=="index"){
+                            // location.reload();
+                            finishdialog("删除成功！","reload");
+                        }else{
+                            // loadTable();
+                            finishdialog("删除成功！","loadTable");
+                        }
                     },
                     error: function (message) {
                         // console.log(+message);
                         // alert("删除失败！");
                         // location.reload();
-                        closereload("系统忙！请稍后再试","reload");
+                        finishdialog("系统忙！请稍后再试","reload");
                     }
                 });
             },
@@ -977,25 +962,29 @@
         $(this).find("a:eq(0)").addClass("active");
     });
     //自动关闭的弹窗
-    /*  注意:如果在弹窗页面调用这个弹窗提示,需要先关闭当前弹窗
-        模板:
-                        $("#my-confirm-finish").modal("close");
-                        $('#my-confirm-finish').on('closed.modal.amui', function(){
-                            if(a_href=="index"){
-                                // location.reload();
-                                closereload("已添加至完成任务！","reload");
-                            }else{
-                                // loadTable();
-                                closereload("已添加至完成任务！","loadTable");
-                            }
-                        });
+    /*
         finish:处理完成的提示信息;
         choose:不传这个参数,弹窗结束就结束了
             1.choose为"reload"的时候,弹窗结束后重新加载页面;
             2.choose为"loadTable"的时候,弹窗结束后根据所在页面刷新表格信息
             3.choose为地址的时候,弹窗结束后跳转地址
      */
-    closereload=function (finish,choose) {
+    //更改弹窗内容
+    finishdialog=function (finish,choose) {
+        $("#loadingmag").html(finish);
+        $("#loadingicon span").remove();
+        setTimeout(function () {
+            if("reload"==choose){
+                location.reload();
+            }else if("loadTable"==choose){
+                loadTable();
+            }else {
+                window.location.href = choose;
+            }
+            $("#my-modal-loading").modal("close");
+        },1000);
+    }
+   /* closereload=function (finish,choose) {
         $("#loadingmag").html("正在处理");
         $("#my-modal-loading").modal({dimmer:false});
         $('#my-modal-loading').on('opened.modal.amui', function(){
@@ -1016,6 +1005,28 @@
                 },500);
             },500);
         });
+    };*/
+    //自定义弹窗
+    //message:弹窗内容;flag:如果是false就没有等待的圈,否则就有
+    showdialog=function (message,flag) {
+        $("#loadingmag").html(message);
+        if(flag===false){
+            $("#loadingicon span").remove();
+        }
+        $("#my-modal-loading").modal({dimmer:false});
+        setTimeout(function () {
+            $("#my-modal-loading").modal("close");
+        },1000);
+    }
+    //显示"正在处理"弹窗
+    rundialog=function () {
+        $("#loadingmag").html("正在处理");
+        if(!$("#loadingicon span")){
+            console.log("11111");
+            $("#loadingicon").appendChild('<span class="am-icon-spinner am-icon-spin"></span>')
+            console.log("11111");
+        }
+        $("#my-modal-loading").modal({dimmer:false});
     };
     //刷新table
     loadTable=function () {
@@ -1034,7 +1045,7 @@
                 // console.log(+message);
                 // alert("系统忙！");
                 // location.reload();
-                closereload("系统忙！请稍后再试","");
+                showdialog("系统忙！请稍后再试");
             }
         });
     };
