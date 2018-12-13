@@ -119,7 +119,7 @@
                     <i class="am-icon-home sidebar-nav-link-logo"></i> 总览
                 </a>
             </li>
-            <li class="sidebar-nav-link " th:if="${user.stRole==10}">
+            <li class="sidebar-nav-link point" th:if="${user.stRole==10}">
                 <a href="javascript:;" class="sidebar-nav-sub-title list">
                     <i class="am-icon-table sidebar-nav-link-logo"></i> 项目列表
                     <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
@@ -133,7 +133,7 @@
                 </ul>
             </li>
 
-            <li class="sidebar-nav-link " th:if="${user.stRole==10}">
+            <li class="sidebar-nav-link point" th:if="${user.stRole==10}">
                 <a href="javascript:;" class="sidebar-nav-sub-title list" >
                     <i class="am-icon-table sidebar-nav-link-logo"></i> 人员列表
                     <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
@@ -321,7 +321,7 @@
     </div>
 
     <!-- 内容区域 -->
-    <div class="tpl-content-wrapper">
+    <div class="tpl-content-wrapper" id="pointtop">
 
         <div class="container-fluid am-cf" style="padding: 15px">
             <div class="row">
@@ -1079,6 +1079,9 @@
             data: {"searchName": searchName},
             dataType: "html",
             success: function (message) {
+                $('#pointtop').sticky({
+                    top: 10
+                });
                 $(".tpl-content-wrapper").html(message);
             },
             error: function (message) {
@@ -1100,6 +1103,11 @@
         $(this).siblings('.sidebar-nav-sub').slideToggle(80)
             .end()
             .find('.sidebar-nav-sub-ico').toggleClass('sidebar-nav-sub-ico-rotate');
+    })
+    $('.point').on("click",function () {
+        $('#pointtop').sticky({
+            top: 10
+        })
     })
 </script>
 </body>
