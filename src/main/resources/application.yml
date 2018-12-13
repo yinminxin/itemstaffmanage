@@ -6,7 +6,6 @@ spring:
 #    username: root
 #    password: 123
 
-
   jpa:
       database: mysql
       properties:
