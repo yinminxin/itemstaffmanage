@@ -595,7 +595,7 @@
     $('#doc-prompt-toggle-task').on('click', function() {
         $('#my-prompt-task').modal({
             relatedTarget: this,
-            closeOnConfirm:false,
+            closeViaDimmer:false,
             onConfirm: function(e) {
                 itemselect=$("#itemselect").val();
                 staffselect=$("#staffselect").val();
@@ -643,7 +643,7 @@
     $('#updatePassword').on('click', function() {
         $('#my-prompt-updatePassWord').modal({
             relatedTarget: this,
-            closeOnConfirm:false,
+            closeViaDimmer:false,
             onConfirm: function(e) {
                 if(e.data==null||e.data==""){
                     // alert("密码不能为空!");
@@ -663,7 +663,7 @@
                             "stPassword": e.data
                         },
                         success: function (message) {
-                            finishdialog("更改成功！重新登陆...","/")
+                            finishdialog("更改成功！请重新登陆...","/")
                         },
                         error: function (message) {
                             // console.log(+message);
@@ -683,7 +683,7 @@
     $('#doc-prompt-toggle-item').on('click', function() {
         $('#my-prompt-item').modal({
             relatedTarget: this,
-            closeOnConfirm:false,
+            closeViaDimmer:false,
             onConfirm: function(e) {
                 if(e.data==null||e.data==""){
                     // alert("项目名不能为空!");
@@ -833,6 +833,7 @@
         tfinishid=ele.value;
         $('#my-confirm-finish').modal({
             relatedTarget: this,
+            closeViaDimmer:false,
             onConfirm: function(options) {
                 $("#my-confirm-finish").modal("close");
                 rundialog();
@@ -921,6 +922,7 @@
         tdeleteid=ele.value;
         $('#my-confirm-delete').modal({
             relatedTarget: this,
+            closeViaDimmer:false,
             onConfirm: function(options) {
                 $("#my-confirm-delete").modal("close");
                 rundialog();
@@ -1013,7 +1015,7 @@
         if(flag===false){
             $("#loadingicon span").remove();
         }
-        $("#my-modal-loading").modal({dimmer:false});
+        $("#my-modal-loading").modal({dimmer:false,closeViaDimmer:false});
         setTimeout(function () {
             $("#my-modal-loading").modal("close");
         },1000);
@@ -1022,11 +1024,9 @@
     rundialog=function () {
         $("#loadingmag").html("正在处理");
         if(!$("#loadingicon span")){
-            console.log("11111");
             $("#loadingicon").appendChild('<span class="am-icon-spinner am-icon-spin"></span>')
-            console.log("11111");
         }
-        $("#my-modal-loading").modal({dimmer:false});
+        $("#my-modal-loading").modal({dimmer:false,closeViaDimmer:false});
     };
     //刷新table
     loadTable=function () {
