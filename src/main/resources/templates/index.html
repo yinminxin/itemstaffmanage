@@ -119,7 +119,7 @@
                     <i class="am-icon-home sidebar-nav-link-logo"></i> 总览
                 </a>
             </li>
-            <li class="sidebar-nav-link point" th:if="${user.stRole==10}">
+            <li class="sidebar-nav-link" th:if="${user.stRole==10}">
                 <a href="javascript:;" class="sidebar-nav-sub-title list">
                     <i class="am-icon-table sidebar-nav-link-logo"></i> 项目列表
                     <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
@@ -133,7 +133,7 @@
                 </ul>
             </li>
 
-            <li class="sidebar-nav-link point" th:if="${user.stRole==10}">
+            <li class="sidebar-nav-link" th:if="${user.stRole==10}">
                 <a href="javascript:;" class="sidebar-nav-sub-title list" >
                     <i class="am-icon-table sidebar-nav-link-logo"></i> 人员列表
                     <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
@@ -380,7 +380,7 @@
                         <div class="widget-body  am-fr">
                             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
                                 <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r"
-                                       >
+                                >
                                     <thead>
                                     <tr>
                                         <th>任务名称</th>
@@ -551,8 +551,8 @@
             </div>
         </div>
 
-        <div class="amz-toolbar" id="amz-toolbar" hidden>
-            <a href="#top" title="回到顶部" class="am-icon-btn am-icon-arrow-up am-active" id="amz-go-top"></a>
+        <div data-am-smooth-scroll class="amz-toolbar" id="amz-toolbar" hidden>
+            <a  title="回到顶部" class="am-icon-btn am-icon-arrow-up am-active" ></a>
         </div>
     </div>
 
@@ -589,12 +589,19 @@
             $(".amz-toolbar").hide();
         }else{
             $(".amz-toolbar").show();
+        };
+        //设置固定元素
+        if($(".loadid").val()){
+            $('#pointtop').sticky({
+                top: 10
+            })
         }
     })
     //添加任务
     $('#doc-prompt-toggle-task').on('click', function() {
         $('#my-prompt-task').modal({
             relatedTarget: this,
+            closeOnConfirm:false,
             closeViaDimmer:false,
             onConfirm: function(e) {
                 itemselect=$("#itemselect").val();
@@ -643,6 +650,7 @@
     $('#updatePassword').on('click', function() {
         $('#my-prompt-updatePassWord').modal({
             relatedTarget: this,
+            closeOnConfirm:false,
             closeViaDimmer:false,
             onConfirm: function(e) {
                 if(e.data==null||e.data==""){
@@ -683,6 +691,7 @@
     $('#doc-prompt-toggle-item').on('click', function() {
         $('#my-prompt-item').modal({
             relatedTarget: this,
+            closeOnConfirm:false,
             closeViaDimmer:false,
             onConfirm: function(e) {
                 if(e.data==null||e.data==""){
@@ -846,8 +855,8 @@
                     // dataType: "json",
                     success: function (message) {
                         // alert("已添加至完成任务！");
-                        a_href=$("a[class*=active]").not(".list").attr("href");
-                        if(a_href=="index"){
+                        // a_href=$("a[class*=active]").not(".list").attr("href");
+                        if(!$(".loadid").val()){
                             // location.reload();
                             finishdialog("已添加至完成任务！","reload");
                         }else{
@@ -935,8 +944,8 @@
                     // dataType: "json",
                     success: function (message) {
                         // alert("删除成功！");
-                        a_href=$("a[class*=active]").not(".list").attr("href");
-                        if(a_href=="index"){
+                        // a_href=$("a[class*=active]").not(".list").attr("href");
+                        if(!$(".loadid").val()){
                             // location.reload();
                             finishdialog("删除成功！","reload");
                         }else{
@@ -986,28 +995,6 @@
             $("#my-modal-loading").modal("close");
         },1000);
     }
-   /* closereload=function (finish,choose) {
-        $("#loadingmag").html("正在处理");
-        $("#my-modal-loading").modal({dimmer:false});
-        $('#my-modal-loading').on('opened.modal.amui', function(){
-            setTimeout(function () {
-                $("#loadingmag").html(finish);
-                $("#loadingicon span").remove();
-                setTimeout(function () {
-                    if(choose){
-                        if("reload"==choose){
-                            location.reload();
-                        }else if("loadTable"==choose){
-                            loadTable();
-                        }else {
-                            window.location.href = choose;
-                        }
-                    }
-                    $("#my-modal-loading").modal("close");
-                },500);
-            },500);
-        });
-    };*/
     //自定义弹窗
     //message:弹窗内容;flag:如果是false就没有等待的圈,否则就有
     showdialog=function (message,flag) {
@@ -1030,7 +1017,8 @@
     };
     //刷新table
     loadTable=function () {
-        loadId = $("a[class*=active]").not(".list").attr("value");
+        // loadId = $("a[class*=active]").not(".list").attr("value");
+        var loadId = $(".loadid").val();
         $.ajax({
             type: "POST",
             url: "task/loadTableByStaffOrItem",
@@ -1079,9 +1067,6 @@
             data: {"searchName": searchName},
             dataType: "html",
             success: function (message) {
-                $('#pointtop').sticky({
-                    top: 10
-                });
                 $(".tpl-content-wrapper").html(message);
             },
             error: function (message) {
@@ -1104,11 +1089,27 @@
             .end()
             .find('.sidebar-nav-sub-ico').toggleClass('sidebar-nav-sub-ico-rotate');
     })
-    $('.point').on("click",function () {
-        $('#pointtop').sticky({
-            top: 10
-        })
+    /*侧边菜单开关*/
+    $('.tpl-header-switch-button').on('click', function() {
+        if ($('.left-sidebar').is('.active')) {
+            if ($(window).width() > 1024) {
+                $('.tpl-content-wrapper').removeClass('active');
+            }
+            $('.left-sidebar').removeClass('active');
+        } else {
+
+            $('.left-sidebar').addClass('active');
+            if ($(window).width() > 1024) {
+                $('.tpl-content-wrapper').addClass('active');
+            }
+        }
     })
+    if ($(window).width() < 1024) {
+        $('.left-sidebar').addClass('active');
+    } else {
+        $('.left-sidebar').removeClass('active');
+    }
+    /*侧边菜单开关*/
 </script>
 </body>
 

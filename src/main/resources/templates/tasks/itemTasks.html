@@ -1,116 +1,116 @@
 <!-- 内容区域 -->
 
 <div class="container-fluid am-cf"  style="padding: 25px">
-        <div class="row">
-            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
-                <div class="page-header-heading" style="float: left"><span class="am-icon-home page-header-heading-icon"></span> [[${item.stName}]]
-                    <small>任务面板</small>
-                </div>
-                <div  style="margin-right: 20px;float: right">
-                    <button
-                            th:value="${item.stId}"
-                            onclick="deleteItem(this)"
-                            type="button"
-                            class="am-btn page-header-button">
-                        <span class="am-icon-paint-brush"></span>
-                        删除项目
-                    </button>
-                </div>
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="page-header-heading" style="float: left"><span class="am-icon-home page-header-heading-icon"></span> [[${item.stName}]]
+                <small>任务面板</small>
+            </div>
+            <div  style="margin-right: 20px;float: right">
+                <button
+                        th:value="${item.stId}"
+                        onclick="deleteItem(this)"
+                        type="button"
+                        class="am-btn page-header-button loadid">
+                    <span class="am-icon-paint-brush"></span>
+                    删除项目
+                </button>
             </div>
         </div>
+    </div>
 </div>
 <div class="row-content am-cf" th:if="${not #lists.isEmpty(tasks)}" >
-        <div class="row  am-cf">
-            <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" >
-                <div class="widget am-cf widget-body-lg">
-                    <div>
-                        <div style="float: left">
+    <div class="row  am-cf">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" >
+            <div class="widget am-cf widget-body-lg">
+                <div>
+                    <div style="float: left">
                         <span >进行中任务
                         </span>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="float: right">
-                            当前进行中的任务数 : [[${item.taskNowNum}]]
-                        </div>
-                    </div>
-                    <div class="widget-body  am-fr">
-                        <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                            <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r ">
-                                <thead>
-                                <tr>
-                                    <th>任务名称</th>
-                                    <th>责任人</th>
-                                    <th>创建时间</th>
-                                    <th>状态</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="gradeX" th:each="task:${tasks}" th:if="${task.stState} == 0">
-                                    <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
-                                    <td th:text="${task.staff.stName}"></td>
-                                    <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
-                                    <td >进行中</td>
-                                    <td>
-                                        <div class="tpl-table-black-operation">
-                                            <button class="am-icon-y-combinator-square" th:value="${task.stId}" onclick="finishTask(this)"
-                                                    data-am-popover="{content: '完成', trigger: 'hover focus'}">
-                                            </button>
-                                            <button class="am-icon-trash" th:value="${task.stId}" onclick="deleteTask(this)"
-                                                    data-am-popover="{content: '删除', trigger: 'hover focus'}">
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- more data -->
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" >
-                <div class="widget am-cf widget-body-lg">
-                    <div>
-                        <div style="float: left">
-                        <span >已完成任务
-                        </span>
-                        </div>
+                <div>
+                    <div style="float: right">
+                        当前进行中的任务数 : [[${item.taskNowNum}]]
                     </div>
-                    <div>
-                        <div style="float: right">
-                            已完成的任务数 : [[${item.taskFinishNum}]]
-                        </div>
-                    </div>
-                    <div class="widget-body  am-fr">
-                        <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
-                            <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r "
-                            >
-                                <thead>
-                                <tr>
-                                    <th>任务名称</th>
-                                    <th>责任人</th>
-                                    <th>创建时间</th>
-                                    <th>完成时间</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="gradeX" th:each="task:${tasks}" th:if="${task.stState} == 1">
-                                    <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
-                                    <td th:text="${task.staff.stName}"></td>
-                                    <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
-                                    <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>
-                                </tr>
-                                <!-- more data -->
-                                </tbody>
-                            </table>
-                        </div>
+                </div>
+                <div class="widget-body  am-fr">
+                    <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                        <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r ">
+                            <thead>
+                            <tr>
+                                <th>任务名称</th>
+                                <th>责任人</th>
+                                <th>创建时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX" th:each="task:${tasks}" th:if="${task.stState} == 0">
+                                <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
+                                <td th:text="${task.staff.stName}"></td>
+                                <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                                <td >进行中</td>
+                                <td>
+                                    <div class="tpl-table-black-operation">
+                                        <button class="am-icon-y-combinator-square" th:value="${task.stId}" onclick="finishTask(this)"
+                                                data-am-popover="{content: '完成', trigger: 'hover focus'}">
+                                        </button>
+                                        <button class="am-icon-trash" th:value="${task.stId}" onclick="deleteTask(this)"
+                                                data-am-popover="{content: '删除', trigger: 'hover focus'}">
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- more data -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" >
+            <div class="widget am-cf widget-body-lg">
+                <div>
+                    <div style="float: left">
+                        <span >已完成任务
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div style="float: right">
+                        已完成的任务数 : [[${item.taskFinishNum}]]
+                    </div>
+                </div>
+                <div class="widget-body  am-fr">
+                    <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                        <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r "
+                        >
+                            <thead>
+                            <tr>
+                                <th>任务名称</th>
+                                <th>责任人</th>
+                                <th>创建时间</th>
+                                <th>完成时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX" th:each="task:${tasks}" th:if="${task.stState} == 1">
+                                <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
+                                <td th:text="${task.staff.stName}"></td>
+                                <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>
+                            </tr>
+                            <!-- more data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="amz-toolbar" id="amz-toolbar" hidden >
     <a href="#top" title="回到顶部" class="am-icon-btn am-icon-arrow-up am-active" id="amz-go-top"></a>
