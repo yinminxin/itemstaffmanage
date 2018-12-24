@@ -39,7 +39,7 @@ public class TBStaffServiceImpl implements TBStaffService {
             TbStaff tbStaff = staffO.get();
             List<TbTask> tbTasks = tbStaff.getTbTasks();
             for(TbTask task : tbTasks){
-                task.setStaff(null);
+//                task.getStaff().setTbTasks(null);
                 task.getItem().setTbTasks(null);
             }
             return tbStaff;

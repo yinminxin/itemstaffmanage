@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/task")
-public class TaskController {
+public class TaskController extends BaseController {
 
     @Autowired
     private TBItemService tbItemService;
@@ -156,7 +156,12 @@ public class TaskController {
                                  @RequestParam("finishWeek") String finishWeek){
 
         List<TbTask> finishTasks=tbTaskService.findAllByStStateAndNumFinishYearAndNumFinishWeek((byte)1,finishYear,finishWeek);
+
         map.put("finishTasks",finishTasks);
+//        //获取session中的用户信息
+        String staffId = (String) getSessionAttr("staff");
+        TbStaff staff = tbStaffService.findByStaffId(staffId);
+        map.put("userone",staff);
         return "tasks/finishTasksOfWeek";
     }
 }

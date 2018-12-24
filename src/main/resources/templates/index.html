@@ -364,6 +364,9 @@
                     <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="showFinishTasks()">已完成任务</button>
                     <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="showWeekFinishTasks()">周完成任务</button>
                 </div>
+                <div style="margin-bottom: 10px;margin-left: 10px" th:if="${user.stRole==11}">
+                    <button type="button"  class="am-btn am-btn-primary js-modal-open" onclick="showWeekFinishTasks()">周完成任务</button>
+                </div>
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg proceed" th:each="staff:${staffs}" th:if="${user.stRole==10 && staff.taskNowNum gt 0}" >
                     <div class="widget am-cf widget-body-lg">
                         <div>

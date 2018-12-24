@@ -16,7 +16,7 @@
         transition: opacity .3s;
     }
 </style>
-<div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg" >
+<div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg" th:if="${userone.stRole==10}">
     <div class="widget am-cf widget-body-lg">
         <div class="widget-body  am-fr">
             <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
@@ -33,6 +33,36 @@
                     </thead>
                     <tbody>
                     <tr class="gradeX" th:each="task:${finishTasks}">
+                        <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
+                        <td th:text="${task.staff.stName}"></td>
+                        <td th:text="${task.item.stName}"></td>
+                        <td th:text="${#dates.format(task.dtCreatetime, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(task.dtFinishtime, 'yyyy-MM-dd')}"></td>
+                    </tr>
+                    <!-- more data -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg" th:if="${userone.stRole==11}">
+    <div class="widget am-cf widget-body-lg">
+        <div class="widget-body  am-fr">
+            <div class="am-scrollable-horizontal " style="height: 330px;overflow-y: auto">
+                <table width="100%" class="am-table-centered am-table am-table-compact am-text-nowrap tpl-table-black example-r "
+                >
+                    <thead>
+                    <tr>
+                        <th>任务名称</th>
+                        <th>责任人</th>
+                        <th>所属项目</th>
+                        <th>创建时间</th>
+                        <th>完成时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="gradeX" th:each="task:${finishTasks}" th:if="${userone.stId==task.staff.stId}">
                         <td th:value="${task.stName}" onmouseover="getNikeName(this)" th:text="${#strings.abbreviate(task.stName,8)}" ></td>
                         <td th:text="${task.staff.stName}"></td>
                         <td th:text="${task.item.stName}"></td>
