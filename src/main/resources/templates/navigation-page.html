@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>页面导航</title>
+    <meta name="description" content="这是一个 navigation 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="assets/css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/jquery.min.js"></script>
+
+</head>
+<style>
+    .over{
+        background:#e9ecf3;
+    }
+    .delete{
+        position: absolute;
+        right: 10px;
+    }
+    #add{
+        position: absolute;
+        right: 15px;
+        bottom: 0px;
+    }
+</style>
+<body data-type="login" class="theme-white">
+<!--<script src="assets/js/theme.js"></script>-->
+<div class="am-g tpl-g">
+    <div class="am-panel am-panel-default">
+        <div align="center" class="am-panel-bd" style="font-weight:bold;font-size: 30px;color: #0c7cb5;position:relative">
+            页面导航
+            <div style="float: right">
+                <a id="add"><span class=" am-icon-plus-circle"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-login" >
+        <div class="tpl-login-content" style="width: 1000px;min-height: 800px;margin: 2% auto 0;padding: 15px">
+            <ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4 am-thumbnails">
+                <li  class="skipPage" th:each="tbPageNavigation:${tpnList}" th:if="${tbPageNavigation.stState} == 0">
+                    <div style="position:relative">
+                        <a  hidden class="delete" th:value="${tbPageNavigation.stId}"><span class=" am-icon-trash"></span></a>
+                        <img style="margin-bottom: 0;margin-top:2rem;width: 230px;height: 130px" class="am-thumbnail" th:src="@{${tbPageNavigation.stPictureUrl}}" />
+                    </div>
+                    <div style="text-align: center">
+                        <span style="color: #1b9eca;font-size: 20px" th:text="${tbPageNavigation.stName}" th:value="${tbPageNavigation.stUrl}"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div style="display:none;"><input id="domain" disabled="disabled" type="text" th:value="${domain}"></div>
+    </div>
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="addNavigation">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd" style="font-weight:bold;font-size: 25px;">添加导航页面</div>
+            <div class="am-modal-bd">
+                <div id="errMsg" style="color: red"></div>
+                <div style="display: block;margin-bottom: 25px;margin-left: 52px">
+                    <form id="testform" role="form" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="form-body" >
+                            <input name="key" id="key" type="hidden" value="image/repair/">
+                            <input name="token" type="hidden" th:value="${token}">
+                            <div class="form-group form-md-line-input ">
+                                <div id="upresDiv" >
+                                    <input id="uploadFile" name="file" accept="image/*" type="file" />
+                                    <div class="form-control-focus" style="margin-left:-5%;">
+                                        <span class="progress" style="background-color: white;"></span>
+                                        <span class="uploaded-result"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input name="accept" type="hidden" />
+                        </div>
+                    </form>
+                </div>
+                <form id="navigationForm">
+                    <div style="display: none" >
+                        <!--<input id='showSrc' type="text" style="width: 60%;float: left;margin-left: 52px" readonly class="am-modal-prompt-input" placeholder="网页图片">-->
+                        <!--<button  onclick='javascript:$("#hiddenFile").click();' style="margin-right: 70px" type="button" class="am-btn am-btn-default am-round">浏览</button>-->
+                        <!--<input name="stPictureUrl" id='hiddenFile' type="file" style="display: none" onchange='showFile(this);'>-->
+                        <input id="fileKey" name="stPictureUrl" type="text" class="form-control" placeholder="" >
+                    </div>
+                    <input name="stUrl" id="stUrl" type="text" style="margin-top: 25px" class="am-modal-prompt-input" placeholder="网页网址">
+                    <input name="stName" id="stName" type="text" style="margin-top: 25px" class="am-modal-prompt-input" placeholder="网页名称">
+                </form>
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/formdata.js"></script>
+<script>
+    var domain = $('#domain').val();
+    $(".skipPage").hover(function () {
+        $(this).addClass("over");
+        $(this).find("a").show();
+    },function () {
+        $(this).removeClass("over");
+        $(this).find("a").hide();
+    })
+    $(".skipPage").on("click",function () {
+        // console.log($(this).find("span").eq("1").attr("value"));
+        window.open($(this).find("span").eq("1").attr("value"));
+    })
+    $(".delete").on("click",function (e) {
+        var sid=$(this).attr("value");
+        $.ajax({
+            type: "POST",
+            url: "navigation/deleteOne",
+            // contentType: "application/json; charset=utf-8",
+            // data: JSON.stringify(GetJsonData()),
+            data:{"id":sid},
+            // dataType: "json",
+            success: function (message) {
+                location.reload();
+            },
+            error: function (message) {
+                alert("系统忙！");
+            }
+        });
+        // alert("不让你删!");
+        e.stopPropagation();
+    })
+    $("#add").on("click",function () {
+        $("#addNavigation").modal({
+            relatedTarget: this,
+            closeOnConfirm:false,
+            closeViaDimmer:false,
+            onConfirm: function(e) {
+                if(!$("#fileKey").prop("value")){
+                    $("#errMsg").text("请选择图片");
+                }
+                else if(!$("#stUrl").prop("value")){
+                    $("#errMsg").text("请填写网页地址");
+                }
+                else if(!$("#stName").prop("value")){
+                    $("#errMsg").text("请填写网页名称(不超过10个字)");
+                }
+                else if($("#stName").prop("value").length>10){
+                    $("#errMsg").text("网页名称不超过10个字!");
+                }else {
+                    $.ajax({
+                        type: "POST",
+                        url: "navigation/upload",
+                        // contentType: "application/json; charset=utf-8",
+                        // data: JSON.stringify(GetJsonData()),
+                        data:$("#navigationForm").serialize(),
+                        // dataType: "json",
+                        success: function (message) {
+                            location.reload();
+                        },
+                        error: function (message) {
+                            alert("系统忙！");
+                            location.reload();
+                        }
+                    });
+                }
+            },
+            onCancel: function(e) {
+                location.reload();
+            }
+        });
+    })
+    showFile=function(ele){
+        $("#showSrc").prop("value",$(ele).val());
+    };
+</script>
+</body>
+
+</html>

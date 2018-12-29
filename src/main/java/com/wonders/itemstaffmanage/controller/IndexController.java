@@ -32,7 +32,7 @@ public class IndexController extends BaseController {
         String staffId = (String) getSessionAttr("staff");
         //判断用户是否存在,不存在跳转登陆页面
         if(staffId==null||staffId==""){
-            return "redirect:/";
+            return "login";
         }
 
         //已完成任务数
