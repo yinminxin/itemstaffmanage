@@ -2,6 +2,10 @@
 /.settings/
 /.classpath
 /.idea/
+/.mvn/
 /*.log
+/*.iml
+/*.cmd
 /out/
 /*.pdf
+/mvnw
