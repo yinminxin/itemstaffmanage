@@ -15,6 +15,7 @@ public class TbStaff implements Serializable{
     private String stUsername;
     private String stPassword;
     private short stRole;
+    private String stMail;
 
     private int taskNowNum; //当前进行中的任务数
     private int taskFinishNum; //当前已完成的任务数
@@ -111,5 +112,14 @@ public class TbStaff implements Serializable{
 
     public void setStRole(short stRole) {
         this.stRole = stRole;
+    }
+
+    @Column(name = "ST_MAIL")
+    public String getStMail() {
+        return stMail;
+    }
+
+    public void setStMail(String stMail) {
+        this.stMail = stMail;
     }
 }

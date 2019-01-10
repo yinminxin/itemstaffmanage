@@ -1,5 +1,6 @@
 package com.wonders.itemstaffmanage.service;
 
+import com.wonders.itemstaffmanage.entity.TbStaff;
 import com.wonders.itemstaffmanage.entity.TbTask;
 import com.wonders.itemstaffmanage.vo.AddTaskVo;
 
@@ -52,4 +53,5 @@ public interface TBTaskService {
      * @return
      */
     List<TbTask> findAllByStStateAndNumFinishYearAndNumFinishWeek(byte b, String finishYear, String finishWeek);
+
 }

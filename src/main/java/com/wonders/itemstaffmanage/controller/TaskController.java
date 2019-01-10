@@ -3,6 +3,7 @@ package com.wonders.itemstaffmanage.controller;
 import com.wonders.itemstaffmanage.entity.TbItem;
 import com.wonders.itemstaffmanage.entity.TbStaff;
 import com.wonders.itemstaffmanage.entity.TbTask;
+import com.wonders.itemstaffmanage.service.MailService;
 import com.wonders.itemstaffmanage.service.TBItemService;
 import com.wonders.itemstaffmanage.service.TBStaffService;
 import com.wonders.itemstaffmanage.service.TBTaskService;
@@ -34,10 +35,16 @@ public class TaskController extends BaseController {
     @Autowired
     private TBTaskService tbTaskService;
 
+    @Autowired
+    private MailService mailService;
+
     @RequestMapping("/addTask")
     @ResponseBody
     public ResponseEntity<Void> addTask(AddTaskVo vo){
+        TbStaff tbStaff=tbStaffService.findByStaffId(vo.getStaffId());
         tbTaskService.addOneTask(vo);
+        String content = " 您有新的任务等待处理:前往http://10.1.64.132:9001/index";
+        mailService.sendTextMail(tbStaff.getStMail(), "任务管理系统", content);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
