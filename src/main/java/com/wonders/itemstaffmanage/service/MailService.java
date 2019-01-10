@@ -9,7 +9,6 @@ import java.util.List;
 @Transactional
 public interface MailService {
 
-
     /**
      * 发送文本邮件
      *
