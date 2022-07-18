@@ -27,10 +27,10 @@ spring:
   thymeleaf:
     cache: false
 qiniu:
-  accessKey: 4GY_U6vPAypr6zc4DkwdpYpNFK2RilZwLo-_sAjQ
-  secretKey: EY9lMY6xTnMPndGWPrgoxTNgs3uh9YktPJM_8P3s
-  bucketUrl: http://smartcampus.eduincloud.net
-  bucketName: smartcampus
-  privateBucketUrl: http://campuspri.eduincloud.net
-  privateBucketName: smartcampus-private
+  accessKey: 4******Q
+  secretKey: EY9l******JM_8P3s
+  bucketUrl: http://sm********loud.net
+  bucketName: smar******mpus
+  privateBucketUrl: http://camp******cloud.net
+  privateBucketName: smar******vate
   expires: 43200
